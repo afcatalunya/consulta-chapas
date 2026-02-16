@@ -7,16 +7,14 @@
 <style>
 
 body{
-font-family: Arial;
-background: linear-gradient(135deg,#667eea,#764ba2);
+font-family:Arial;
+background:linear-gradient(135deg,#667eea,#764ba2);
 color:white;
 margin:0;
 padding:20px;
 }
 
-h1{
-text-align:center;
-}
+h1{text-align:center;}
 
 .filtros{
 background:white;
@@ -25,8 +23,8 @@ padding:15px;
 border-radius:8px;
 margin-bottom:15px;
 display:flex;
-flex-wrap:wrap;
 gap:10px;
+flex-wrap:wrap;
 }
 
 input,select{
@@ -53,9 +51,12 @@ padding:6px;
 border-bottom:1px solid #ddd;
 }
 
-tr:hover{
-background:#f0f0f0;
-}
+tr:hover{background:#eee;}
+
+.stock{color:green;font-weight:bold;}
+.dias{color:orange;font-weight:bold;}
+.fabrica{color:blue;font-weight:bold;}
+.sinstock{color:red;font-weight:bold;}
 
 </style>
 </head>
@@ -66,7 +67,7 @@ background:#f0f0f0;
 
 <div class="filtros">
 
-<input id="busquedaGlobal" placeholder="Buscar cualquier valor..." oninput="filtrar()">
+<input id="busquedaGlobal" placeholder="Buscar..." oninput="filtrar()">
 
 <input id="fLargo" placeholder="Largo" oninput="filtrar()">
 
@@ -86,33 +87,27 @@ background:#f0f0f0;
 
 </div>
 
-<table id="tabla">
+<table>
 
 <thead>
 
 <tr>
 
 <th onclick="ordenar('REFERENCIA')">Referencia</th>
-
 <th onclick="ordenar('Largo')">Largo</th>
-
 <th onclick="ordenar('Ancho')">Ancho</th>
-
 <th onclick="ordenar('Espesor')">Espesor</th>
-
 <th onclick="ordenar('Aleación')">Aleación</th>
-
 <th onclick="ordenar('Temple')">Temple</th>
-
-<th onclick="ordenar('Peso Teórico')">Peso Teórico</th>
-
-<th onclick="ordenar('Precio')">Precio €</th>
+<th onclick="ordenar('Peso Teórico')">Peso</th>
+<th onclick="ordenar('estadoTexto')">Estado</th>
+<th onclick="ordenar('precioCalc')">Precio €</th>
 
 </tr>
 
 </thead>
 
-<tbody></tbody>
+<tbody id="tbody"></tbody>
 
 </table>
 
@@ -120,159 +115,150 @@ background:#f0f0f0;
 
 let datos=[];
 let datosFiltrados=[];
-let direccionOrden=1;
+let ordenAsc=true;
+let columnaOrden="REFERENCIA";
 
-fetch('./inventario.json?v='+Date.now())
-
+fetch("./inventario.json?v="+Date.now())
 .then(r=>r.json())
-
 .then(json=>{
 
 datos=json;
-
 datosFiltrados=json;
 
 llenarCombos();
-
-mostrar(datos);
+filtrar();
 
 });
 
 function llenarCombos(){
 
-let aleaciones=[...new Set(datos.map(x=>x["Aleación"]).filter(x=>x))];
+let aleaciones=[...new Set(datos.map(x=>x["Aleación"]))];
+let temples=[...new Set(datos.map(x=>x["Temple"]))];
 
-let temples=[...new Set(datos.map(x=>x["Temple"]).filter(x=>x))];
-
-let selAleacion=document.getElementById("fAleacion");
-
-let selTemple=document.getElementById("fTemple");
-
-aleaciones.sort().forEach(x=>{
-
-let o=document.createElement("option");
-o.value=x;
-o.text=x;
-selAleacion.add(o);
-
+aleaciones.forEach(a=>{
+document.getElementById("fAleacion").innerHTML+=`<option>${a}</option>`;
 });
 
-temples.sort().forEach(x=>{
-
-let o=document.createElement("option");
-o.value=x;
-o.text=x;
-selTemple.add(o);
-
+temples.forEach(t=>{
+document.getElementById("fTemple").innerHTML+=`<option>${t}</option>`;
 });
 
 }
 
-function mostrar(lista){
+function calcularEstado(x){
 
-let precioKilo=parseFloat(document.getElementById("precioKilo").value)||0;
+let t=x["TARRAGONA"]||0;
+let v=x["VALENCIA"]||0;
+let m=x["MURCIA"]||0;
+let p=x["PEDIDAS"]||0;
 
-let tbody=document.querySelector("#tabla tbody");
+if(t>=10)
+return ["Stock","stock"];
 
-tbody.innerHTML="";
+if(t<10 && (v>=10 || m>=10))
+return ["7-10 días","dias"];
 
-lista.forEach(x=>{
+if(t<10 && v<10 && m<10 && p>0)
+return ["Consultar fábrica","fabrica"];
 
-let precio=(precioKilo*x["Peso Teórico"]).toFixed(2);
-
-let tr=document.createElement("tr");
-
-tr.innerHTML=`
-
-<td>${x["REFERENCIA"]||""}</td>
-
-<td>${x["Largo"]||""}</td>
-
-<td>${x["Ancho"]||""}</td>
-
-<td>${x["Espesor"]||""}</td>
-
-<td>${x["Aleación"]||""}</td>
-
-<td>${x["Temple"]||""}</td>
-
-<td>${x["Peso Teórico"]||""}</td>
-
-<td>${precio}</td>
-
-`;
-
-tbody.appendChild(tr);
-
-});
+return ["Sin stock","sinstock"];
 
 }
 
 function filtrar(){
 
-let global=document.getElementById("busquedaGlobal").value.toLowerCase();
-
-let largo=document.getElementById("fLargo").value.toLowerCase();
-
-let ancho=document.getElementById("fAncho").value.toLowerCase();
-
-let espesor=document.getElementById("fEspesor").value.toLowerCase();
-
-let aleacion=document.getElementById("fAleacion").value.toLowerCase();
-
-let temple=document.getElementById("fTemple").value.toLowerCase();
+let g=document.getElementById("busquedaGlobal").value.toLowerCase();
+let largo=document.getElementById("fLargo").value;
+let ancho=document.getElementById("fAncho").value;
+let espesor=document.getElementById("fEspesor").value;
+let aleacion=document.getElementById("fAleacion").value;
+let temple=document.getElementById("fTemple").value;
 
 datosFiltrados=datos.filter(x=>{
 
-let texto=JSON.stringify(x).toLowerCase();
+let estado=calcularEstado(x)[0];
 
-return(
+let texto=(JSON.stringify(x)+estado).toLowerCase();
 
-(!global||texto.includes(global))&&
-
-(!largo||String(x["Largo"]).toLowerCase().includes(largo))&&
-
-(!ancho||String(x["Ancho"]).toLowerCase().includes(ancho))&&
-
-(!espesor||String(x["Espesor"]).toLowerCase().includes(espesor))&&
-
-(!aleacion||String(x["Aleación"]).toLowerCase().includes(aleacion))&&
-
-(!temple||String(x["Temple"]).toLowerCase().includes(temple))
-
-);
+return (!g || texto.includes(g))
+&&(!largo || x["Largo"]==largo)
+&&(!ancho || x["Ancho"]==ancho)
+&&(!espesor || x["Espesor"]==espesor)
+&&(!aleacion || x["Aleación"]==aleacion)
+&&(!temple || x["Temple"]==temple);
 
 });
 
-mostrar(datosFiltrados);
+mostrar();
+
+}
+
+function mostrar(){
+
+let precio=document.getElementById("precioKilo").value||0;
+
+let html="";
+
+datosFiltrados.forEach(x=>{
+
+let peso=x["Peso Teórico"]||0;
+let precioCalc=(peso*precio).toFixed(2);
+
+let estado=calcularEstado(x);
+
+x.estadoTexto=estado[0];
+x.precioCalc=precioCalc;
+
+html+=`
+
+<tr>
+
+<td>${x["REFERENCIA"]}</td>
+<td>${x["Largo"]}</td>
+<td>${x["Ancho"]}</td>
+<td>${x["Espesor"]}</td>
+<td>${x["Aleación"]}</td>
+<td>${x["Temple"]}</td>
+<td>${peso}</td>
+
+<td class="${estado[1]}">${estado[0]}</td>
+
+<td>${precioCalc}</td>
+
+</tr>
+
+`;
+
+});
+
+document.getElementById("tbody").innerHTML=html;
 
 }
 
 function ordenar(col){
 
-direccionOrden*=-1;
+ordenAsc=!ordenAsc;
 
 datosFiltrados.sort((a,b)=>{
 
 let v1=a[col]||"";
 let v2=b[col]||"";
 
-if(!isNaN(v1)&&!isNaN(v2)){
-
-return direccionOrden*(v1-v2);
-
+if(!isNaN(v1) && !isNaN(v2)){
+return ordenAsc ? v1-v2 : v2-v1;
 }
 
-return direccionOrden*v1.toString().localeCompare(v2.toString());
+return ordenAsc ?
+String(v1).localeCompare(String(v2)) :
+String(v2).localeCompare(String(v1));
 
 });
 
-mostrar(datosFiltrados);
+mostrar();
 
 }
 
 </script>
 
 </body>
-
 </html>
