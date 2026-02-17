@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Consulta de Inventario</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 40px;
+    background-color: #f4f6f8;
+}
+h1 {
+    color: #333;
+}
+#searchBox {
+    width: 400px;
+    padding: 10px;
+    font-size: 16px;
+}
+table {
+    border-collapse: collapse;
+    margin-top: 20px;
+    width: 100%;
+    background: white;
+}
+th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+th {
+    background-color: #0078d7;
+    color: white;
+}
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+</style>
+</head>
+<body>
+
+<h1>Consulta de Inventario</h1>
+
+<input type="text" id="searchBox" placeholder="Escribe referencia, acabado o longitud..." onkeyup="buscar()">
+
+<table id="tabla">
+<thead>
+<tr>
+<th>Referencia</th>
+<th>Longitud (mm)</th>
+<th>Acabado</th>
+<th>Peso (kg/m)</th>
+<th>Tarragona</th>
+<th>Murcia</th>
+<th>Valencia</th>
+<th>Total</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+
+<script>
+let inventario = [];
+
+fetch('inventario_consolidado.json')
+.then(response => response.json())
+.then(data => {
+    inventario = data.productos;
+    mostrar(inventario);
+});
+
+function mostrar(lista) {
+    const tbody = document.querySelector("#tabla tbody");
+    tbody.innerHTML = "";
+    lista.forEach(p => {
+        const fila = `
+        <tr>
+            <td>${p.referencia}</td>
+            <td>${p.longitud_mm}</td>
+            <td>${p.acabado}</td>
+            <td>${p.peso_kg_m}</td>
+            <td>${p.stock.tarragona}</td>
+            <td>${p.stock.murcia}</td>
+            <td>${p.stock.valencia}</td>
+            <td><b>${p.stock.total}</b></td>
+        </tr>`;
+        tbody.innerHTML += fila;
+    });
+}
+
+function buscar() {
+    const texto = document.getElementById("searchBox").value.toLowerCase();
+    const filtrado = inventario.filter(p =>
+        p.referencia.toLowerCase().includes(texto) ||
+        p.acabado.toLowerCase().includes(texto) ||
+        String(p.longitud_mm).includes(texto)
+    );
+    mostrar(filtrado);
+}
+</script>
+
+</body>
+</html>
