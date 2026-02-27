@@ -362,6 +362,69 @@
     text-align:center; padding:20px;
     font-size:0.7rem; color:var(--text-light);
   }
+
+/* ── RESPONSIVE MÓVIL ── */
+@media (max-width: 768px) {
+  .table-card, .table-wrap { display: none !important; }
+  .result-meta { margin-bottom: 8px; }
+
+  .cards-wrap { display: flex; flex-direction: column; gap: 10px; }
+
+  .ref-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 14px 16px;
+    position: relative;
+  }
+  .ref-card-top {
+    display: flex; align-items: flex-start;
+    justify-content: space-between; gap: 8px;
+    margin-bottom: 10px;
+  }
+  .ref-card-ref {
+    font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    font-weight: 700; color: var(--accent);
+  }
+  .ref-card-desc {
+    font-size: 0.8rem; color: var(--text);
+    font-weight: 500; margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .ref-card-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 6px 12px; margin-bottom: 10px;
+  }
+  .ref-card-item { display: flex; flex-direction: column; gap: 1px; }
+  .ref-card-label {
+    font-size: 0.58rem; font-weight: 700; letter-spacing: 0.07em;
+    text-transform: uppercase; color: var(--text-light);
+  }
+  .ref-card-val {
+    font-size: 0.78rem; color: var(--text); font-weight: 500;
+  }
+  .ref-card-val.mono {
+    font-family: 'DM Mono', monospace; font-size: 0.73rem;
+    color: var(--text-muted);
+  }
+  .ref-card-footer {
+    display: flex; align-items: center; justify-content: flex-end;
+    padding-top: 8px; border-top: 1px solid var(--border);
+  }
+
+  .filters-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .search-card-title { display: none; }
+
+  .pagination { flex-wrap: wrap; gap: 4px; }
+}
+
+@media (min-width: 769px) {
+  .cards-wrap { display: none !important; }
+}
+
 </style>
 </head>
 <body>
@@ -501,6 +564,7 @@
         <span class="icon">😕</span>
         <p>No se encontraron referencias con esos criterios</p>
       </div>
+      <div class="cards-wrap" id="cardsWrap"></div>
       <div class="pagination" id="pagination"></div>
     </div>
   </div>
@@ -603,6 +667,57 @@ function render() {
     return;
   }
   document.getElementById('noRes').style.display='none';
+
+  // MÓVIL: tarjetas
+  const cardsWrap = document.getElementById('cardsWrap');
+  if (cardsWrap) {
+    if (total === 0) {
+      cardsWrap.innerHTML = '';
+    } else {
+      cardsWrap.innerHTML = slice.map(r => {
+        const est = estadoCliente(r);
+        return `
+        <div class="ref-card">
+          <div class="ref-card-top">
+            <span class="ref-card-ref">${r.ref}</span>
+            <span class="badge ${badgeClass(est)}">${est}</span>
+          </div>
+          <div class="ref-card-desc">${r.descripcion}</div>
+          <div class="ref-card-grid">
+            <div class="ref-card-item">
+              <span class="ref-card-label">Largo</span>
+              <span class="ref-card-val mono">${r.largo ?? '—'}</span>
+            </div>
+            <div class="ref-card-item">
+              <span class="ref-card-label">Ancho</span>
+              <span class="ref-card-val mono">${r.ancho ?? '—'}</span>
+            </div>
+            <div class="ref-card-item">
+              <span class="ref-card-label">Espesor</span>
+              <span class="ref-card-val mono">${r.espesor ?? '—'}</span>
+            </div>
+            <div class="ref-card-item">
+              <span class="ref-card-label">Aleación</span>
+              <span class="ref-card-val">${r.aleacion}</span>
+            </div>
+            <div class="ref-card-item">
+              <span class="ref-card-label">Temple</span>
+              <span class="ref-card-val">${r.temple}</span>
+            </div>
+            <div class="ref-card-item">
+              <span class="ref-card-label">Peso kg</span>
+              <span class="ref-card-val mono">${r.peso?.toFixed(3) ?? '—'}</span>
+            </div>
+            <div class="ref-card-item" style="grid-column:1/-1">
+              <span class="ref-card-label">Acabado</span>
+              <span class="ref-card-val">${r.acabado || '—'}</span>
+            </div>
+          </div>
+        </div>`;
+      }).join('');
+    }
+  }
+
 
   tbody.innerHTML = slice.map(r => `
     <tr>

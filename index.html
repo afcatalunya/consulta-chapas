@@ -383,6 +383,102 @@
   .login-btn:active { transform: translateY(0); }
   .login-error { margin-top: 12px; font-size: 0.78rem; color: #fca5a5; min-height: 18px; }
   .login-footer { margin-top: 20px; font-size: 0.66rem; color: rgba(255,255,255,0.18); }
+
+/* ── RESPONSIVE MÓVIL ── */
+@media (max-width: 768px) {
+  .table-wrap { display: none !important; }
+  .result-info { margin-bottom: 8px; }
+
+  .cards-wrap { display: flex; flex-direction: column; gap: 10px; }
+
+  .ref-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: var(--shadow-sm);
+    padding: 14px 16px;
+  }
+  .ref-card-top {
+    display: flex; align-items: center;
+    justify-content: space-between; gap: 8px;
+    margin-bottom: 8px;
+  }
+  .ref-card-ref {
+    font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    font-weight: 700; color: var(--accent);
+  }
+  .ref-card-desc {
+    font-size: 0.79rem; color: var(--text);
+    font-weight: 500; margin-bottom: 10px; line-height: 1.35;
+  }
+  .ref-card-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 6px 14px; margin-bottom: 10px;
+  }
+  .ref-card-item { display: flex; flex-direction: column; gap: 1px; }
+  .ref-card-label {
+    font-size: 0.58rem; font-weight: 700; letter-spacing: 0.07em;
+    text-transform: uppercase; color: var(--text-light);
+  }
+  .ref-card-val {
+    font-size: 0.78rem; color: var(--text); font-weight: 500;
+  }
+  .ref-card-val.mono {
+    font-family: 'DM Mono', monospace; font-size: 0.73rem; color: var(--text-muted);
+  }
+  .ref-card-stock {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 6px; margin-bottom: 10px;
+    background: var(--surface2); border-radius: 8px; padding: 8px;
+  }
+  .ref-card-stock-item { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .ref-card-stock-label {
+    font-size: 0.55rem; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--text-light);
+  }
+  .ref-card-stock-val {
+    font-family: 'DM Mono', monospace; font-size: 0.82rem;
+    font-weight: 700; color: var(--text);
+  }
+  .ref-card-stock-val.has-stock { color: #059669; }
+  .ref-card-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 8px; border-top: 1px solid var(--border); gap: 8px;
+  }
+  .ref-card-price {
+    font-family: 'DM Mono', monospace; font-size: 0.78rem;
+    color: var(--text-muted); font-weight: 500;
+  }
+  .ref-card-actions { display: flex; gap: 6px; }
+  .ref-card-actions button {
+    height: 28px; padding: 0 10px; font-size: 0.7rem;
+    border-radius: 6px; border: 1px solid var(--border2);
+    background: var(--surface); cursor: pointer;
+    font-family: inherit; font-weight: 600; color: var(--text-muted);
+    transition: all 0.15s;
+  }
+  .ref-card-actions button:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* filtros en 2 columnas */
+  .filter-panel {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+  .filter-panel .btn-reset {
+    grid-column: 1 / -1;
+  }
+  .filter-panel .filter-group:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .pagination { flex-wrap: wrap; gap: 4px; }
+}
+
+@media (min-width: 769px) {
+  .cards-wrap { display: none !important; }
+}
+
 </style>
 </head>
 <body>
@@ -510,7 +606,8 @@
       <div class="icon">🔍</div>
       <p>No se encontraron referencias con los filtros aplicados</p>
     </div>
-    <div class="pagination" id="pagination"></div>
+    <div class="cards-wrap" id="cardsWrap"></div>
+          <div class="pagination" id="pagination"></div>
   </div>
 
 </div>
@@ -618,6 +715,79 @@ function render() {
     return;
   }
   document.getElementById('noResults').style.display = 'none';
+
+  // MÓVIL: tarjetas
+  const cardsWrap = document.getElementById('cardsWrap');
+  if (cardsWrap) {
+    if (total === 0) {
+      cardsWrap.innerHTML = '';
+    } else {
+      cardsWrap.innerHTML = slice.map((r, idx) => {
+        const precioKg = parseFloat(document.getElementById('precioKg').value) || 0;
+        const precioUd = precioKg > 0 && r.peso ? (precioKg * r.peso).toFixed(2) + ' €' : '—';
+        return `
+        <div class="ref-card">
+          <div class="ref-card-top">
+            <span class="ref-card-ref">${r.ref}</span>
+            <span class="badge ${badgeClass(r.estado)}">${r.estado}</span>
+          </div>
+          <div class="ref-card-desc">${r.descripcion}</div>
+          <div class="ref-card-grid">
+            <div class="ref-card-item">
+              <span class="ref-card-label">Largo</span>
+              <span class="ref-card-val mono">${r.largo ?? '—'}</span>
+            </div>
+            <div class="ref-card-item">
+              <span class="ref-card-label">Ancho</span>
+              <span class="ref-card-val mono">${r.ancho ?? '—'}</span>
+            </div>
+            <div class="ref-card-item">
+              <span class="ref-card-label">Espesor</span>
+              <span class="ref-card-val mono">${r.espesor ?? '—'}</span>
+            </div>
+            <div class="ref-card-item">
+              <span class="ref-card-label">Aleación</span>
+              <span class="ref-card-val">${r.aleacion}</span>
+            </div>
+            <div class="ref-card-item">
+              <span class="ref-card-label">Temple</span>
+              <span class="ref-card-val">${r.temple}</span>
+            </div>
+            <div class="ref-card-item">
+              <span class="ref-card-label">Peso kg</span>
+              <span class="ref-card-val mono">${r.peso?.toFixed(3) ?? '—'}</span>
+            </div>
+            <div class="ref-card-item" style="grid-column:1/-1">
+              <span class="ref-card-label">Acabado</span>
+              <span class="ref-card-val">${r.acabado || '—'}</span>
+            </div>
+          </div>
+          <div class="ref-card-stock">
+            <div class="ref-card-stock-item">
+              <span class="ref-card-stock-label">Tarragona</span>
+              <span class="ref-card-stock-val ${r.tar > 0 ? 'has-stock' : ''}">${r.tar}</span>
+            </div>
+            <div class="ref-card-stock-item">
+              <span class="ref-card-stock-label">Murcia</span>
+              <span class="ref-card-stock-val ${r.mur > 0 ? 'has-stock' : ''}">${r.mur}</span>
+            </div>
+            <div class="ref-card-stock-item">
+              <span class="ref-card-stock-label">Valencia</span>
+              <span class="ref-card-stock-val ${r.val > 0 ? 'has-stock' : ''}">${r.val}</span>
+            </div>
+          </div>
+          <div class="ref-card-footer">
+            <span class="ref-card-price">Precio ud: ${precioUd}</span>
+            <div class="ref-card-actions">
+              <button onclick="copiar(${start + idx})">📋 Copiar</button>
+              <button onclick="montal(${start + idx})">📤 Montal</button>
+            </div>
+          </div>
+        </div>`;
+      }).join('');
+    }
+  }
+
 
   tbody.innerHTML = slice.map((r, idx) => {
     const precioUd = precioKg > 0 && r.peso ? precioKg * r.peso : null;
