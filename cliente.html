@@ -413,10 +413,12 @@
     padding-top: 8px; border-top: 1px solid var(--border);
   }
 
-  .filters-grid {
+  .filter-panel {
+    display: grid !important;
     grid-template-columns: 1fr 1fr !important;
+    flex-wrap: wrap;
   }
-  .search-card-title { display: none; }
+  .filter-panel .btn-reset { grid-column: 1 / -1; }
 
   .pagination { flex-wrap: wrap; gap: 4px; }
 }
@@ -537,6 +539,7 @@
   <!-- Results -->
   <div id="resultsSection" style="display:none">
     <div class="result-meta" id="resultMeta"></div>
+    <!-- ESCRITORIO: tabla -->
     <div class="table-card">
       <table>
         <colgroup>
@@ -564,12 +567,12 @@
         <span class="icon">😕</span>
         <p>No se encontraron referencias con esos criterios</p>
       </div>
-      <div class="cards-wrap" id="cardsWrap"></div>
-      <div class="pagination" id="pagination"></div>
     </div>
+    <!-- MÓVIL: tarjetas -->
+    <div class="cards-wrap" id="cardsWrap"></div>
+    <!-- paginación compartida -->
+    <div class="pagination" id="pagination"></div>
   </div>
-
-</div>
 
 
 
