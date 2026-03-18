@@ -657,8 +657,10 @@ const PRICE_TABLE = {
 };
 
 function getPrecioKg(r) {
+  // Solo acabado S/A o P.V.C.-1C
+  const acab = (r.acabado || '').trim();
+  if (acab !== 'S/A' && acab !== 'P.V.C.-1C') return null;
   // Solo aleaciones con precio definido
-  const alea = r.aleacion ? r.aleacion.toString().replace(/[^0-9]/g,'').substring(0,4) : '';
   const key = Object.keys(PRICE_TABLE).find(k => r.aleacion && r.aleacion.includes(k));
   if (!key) return null;
   // Solo medidas estándar
