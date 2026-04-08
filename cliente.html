@@ -11198,15 +11198,16 @@ function mailConsulta(i) {
   var subject = encodeURIComponent('Consulta chapa - ' + r.ref);
   var body = 'Buenos dias,' + nl + nl
     + 'Solicito informacion sobre la siguiente chapa:' + nl + nl
-    + 'Referencia:     ' + encodeURIComponent(r.ref) + nl
-    + 'Descripcion:    ' + encodeURIComponent(r.descripcion) + nl
+    + 'Referencia:     ' + r.ref + nl
+    + 'Descripcion:    ' + r.descripcion + nl
     + 'Dimensiones:    ' + r.largo + ' x ' + r.ancho + ' x ' + r.espesor + ' mm' + nl
-    + 'Aleacion:       ' + encodeURIComponent(r.aleacion) + nl
-    + 'Temple:         ' + encodeURIComponent(r.temple) + nl
-    + 'Disponibilidad: ' + encodeURIComponent(est) + nl + nl
+    + 'Aleacion:       ' + r.aleacion + nl
+    + 'Temple:         ' + r.temple + nl
+    + 'Acabado:        ' + (r.acabado || 'N/A') + nl
+    + 'Disponibilidad: ' + est + nl + nl
     + 'Cantidad necesaria: _____ uds.' + nl + nl
     + 'Muchas gracias.';
-  window.location.href = 'mailto:danielf@aluminiosfranco.es?subject=' + subject + '&body=' + body;
+  window.location.href = 'mailto:danielf@aluminiosfranco.es?subject=' + subject + '&body=' + encodeURIComponent(body);
 }
 
 const PAGE_SIZE = 30;
