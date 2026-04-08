@@ -101,63 +101,61 @@
 
   /* ── BANNER PRECIOS ── */
   .price-banner {
-    max-width: 900px; margin: 32px auto 0;
-    border-radius: 12px; overflow: hidden;
-    border: 1px solid rgba(255,255,255,0.2);
-    background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(12px);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    max-width: 820px; margin: 28px auto 0;
+    border-radius: 14px; overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.07);
+    backdrop-filter: blur(10px);
   }
   .banner-head {
-    background: rgba(0,0,0,0.3);
-    padding: 14px 20px;
-    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    background: rgba(0,0,0,0.25);
+    padding: 11px 18px;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;
   }
   .banner-head-left {
-    display: flex; align-items: center; gap: 10px;
-    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
-    text-transform: uppercase; color: rgba(255,255,255,0.85);
+    display: flex; align-items: center; gap: 8px;
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: rgba(255,255,255,0.55);
   }
-  .banner-head-left span { font-size: 1.1rem; }
+  .banner-head-left span { font-size: 0.95rem; }
   .banner-note {
-    font-size: 0.72rem; color: rgba(255,255,255,0.7);
+    font-size: 0.7rem; color: rgba(255,255,255,0.4);
     font-style: italic; font-weight: 400;
   }
-  .banner-note strong { color: #fcd34d; font-style: normal; font-weight: 600; }
+  .banner-note strong { color: #fbbf24; font-style: normal; }
 
   .ptable { width: 100%; border-collapse: collapse; }
   .ptable thead th {
-    padding: 12px 16px;
-    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em;
-    text-transform: uppercase; color: rgba(255,255,255,0.75);
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    background: rgba(0,0,0,0.18);
-    text-align: center;
+    padding: 9px 16px;
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.09em;
+    text-transform: uppercase; color: rgba(255,255,255,0.4);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    background: rgba(0,0,0,0.12);
   }
   .ptable thead th:first-child { text-align: left; }
+  .ptable thead th:not(:first-child) { text-align: center; }
 
-  .ptable tbody tr { background: rgba(0,0,0,0.15); border-bottom: 1px solid rgba(255,255,255,0.05); }
-  .ptable tbody tr:nth-child(even) { background: rgba(0,0,0,0.25); }
-  .ptable tbody tr:hover { background: rgba(255,255,255,0.09); }
+  .ptable tbody tr { background: rgba(0,0,0,0.15) !important; }
+  .ptable tbody tr:nth-child(even) { background: rgba(0,0,0,0.28) !important; }
+  .ptable tbody tr:hover { background: rgba(255,255,255,0.07) !important; }
   .ptable tbody td {
-    padding: 12px 16px;
-    font-size: 0.88rem; font-weight: 500;
-    color: #ffffff;
+    padding: 10px 16px;
+    font-size: 0.84rem; font-weight: 500;
+    color: #ffffff !important;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
   }
   .ptable tbody tr:last-child td { border-bottom: none; }
-  .ptable tbody td:first-child { text-align: left; }
   .ptable tbody td:not(:first-child) {
     text-align: center;
-    font-family: 'DM Mono', monospace; font-weight: 700; font-size: 0.95rem;
-    color: #a3e635;
+    font-family: 'DM Mono', monospace; font-weight: 700; font-size: 0.9rem;
+    color: #a3e635 !important;
   }
   .ptable .row-label { display: flex; align-items: center; gap: 8px; }
   .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
   .dot-g { background: #4ade80; }
   .dot-b { background: #60a5fa; }
   .dot-y { background: #fbbf24; }
-  .ptable .price-note { font-size: 0.7rem; color: rgba(255,255,255,0.65); font-weight: 400; }
+  .ptable .price-note { font-size: 0.7rem; color: rgba(255,255,255,0.55) !important; font-weight: 400; }
 
   /* ── SEARCH PANEL ── */
   .page-body {
@@ -528,7 +526,8 @@
         <tr>
           <td><div class="row-label"><span class="dot dot-b"></span>Chapas Damero</div></td>
           <td>4,45 €</td>
-          <td>5,10 € <span class="price-note">(5mm)</span></td>
+          <td>5,10 €</td>
+          <td>5,10 € <span class="price-note">(Damero 5mm)</span></td>
         </tr>
         <tr>
           <td><div class="row-label"><span class="dot dot-y"></span>Aleación 6082 T6</div></td>
@@ -11198,16 +11197,15 @@ function mailConsulta(i) {
   var subject = encodeURIComponent('Consulta chapa - ' + r.ref);
   var body = 'Buenos dias,' + nl + nl
     + 'Solicito informacion sobre la siguiente chapa:' + nl + nl
-    + 'Referencia:     ' + r.ref + nl
-    + 'Descripcion:    ' + r.descripcion + nl
+    + 'Referencia:     ' + encodeURIComponent(r.ref) + nl
+    + 'Descripcion:    ' + encodeURIComponent(r.descripcion) + nl
     + 'Dimensiones:    ' + r.largo + ' x ' + r.ancho + ' x ' + r.espesor + ' mm' + nl
-    + 'Aleacion:       ' + r.aleacion + nl
-    + 'Temple:         ' + r.temple + nl
-    + 'Acabado:        ' + (r.acabado || 'N/A') + nl
-    + 'Disponibilidad: ' + est + nl + nl
+    + 'Aleacion:       ' + encodeURIComponent(r.aleacion) + nl
+    + 'Temple:         ' + encodeURIComponent(r.temple) + nl
+    + 'Disponibilidad: ' + encodeURIComponent(est) + nl + nl
     + 'Cantidad necesaria: _____ uds.' + nl + nl
     + 'Muchas gracias.';
-  window.location.href = 'mailto:danielf@aluminiosfranco.es?subject=' + subject + '&body=' + encodeURIComponent(body);
+  window.location.href = 'mailto:danielf@aluminiosfranco.es?subject=' + subject + '&body=' + body;
 }
 
 const PAGE_SIZE = 30;
