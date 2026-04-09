@@ -476,6 +476,85 @@
   }
   .price-alert-close:hover { background: rgba(255,255,255,0.25); }
 
+  /* ── DISCLAIMER MODAL ── */
+  .disclaimer-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    backdrop-filter: blur(4px);
+  }
+  .disclaimer-overlay.hidden {
+    display: none;
+  }
+  .disclaimer-modal {
+    background: white;
+    border-radius: 14px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+    animation: slideUp 0.3s ease;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+  .disclaimer-header {
+    background: linear-gradient(135deg, #1d5c1d 0%, #2d7a2d 100%);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: white;
+  }
+  .disclaimer-icon {
+    font-size: 1.8rem;
+    flex-shrink: 0;
+  }
+  .disclaimer-header h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+  .disclaimer-content {
+    padding: 24px;
+    color: #111827;
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+  .disclaimer-content p {
+    margin: 0 0 12px 0;
+  }
+  .disclaimer-content p:last-child {
+    margin-bottom: 0;
+  }
+  .disclaimer-content strong {
+    color: #2d7a2d;
+    font-weight: 700;
+  }
+  .disclaimer-btn {
+    width: calc(100% - 48px);
+    margin: 0 24px 24px;
+    padding: 12px;
+    background: #2d7a2d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .disclaimer-btn:hover {
+    background: #1d5c1d;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(45,122,45,0.2);
+  }
+
 </style>
 </head>
 <body>
@@ -538,6 +617,7 @@
   </div>
 </header>
 
+
   <!-- ALERTA CAMBIO PRECIO -->
   <div class="price-alert" id="priceAlert" style="display:none">
     <div class="price-alert-content">
@@ -548,6 +628,22 @@
       </span>
     </div>
     <button class="price-alert-close" onclick="dismissAlert()">Entendido ✕</button>
+  </div>
+
+  <!-- DISCLAIMER DISPONIBILIDAD -->
+  <div class="disclaimer-overlay" id="disclaimerOverlay">
+    <div class="disclaimer-modal">
+      <div class="disclaimer-header">
+        <span class="disclaimer-icon">ℹ️</span>
+        <h2>Importante</h2>
+      </div>
+      <div class="disclaimer-content">
+        <p>Los pedidos cursados según esta consulta de existencias <strong>están sujetos a confirmación de disponibilidad</strong> por parte de nuestro equipo.</p>
+        <p>Aunque los datos se actualizan regularmente, pueden producirse cambios durante la semana (variaciones en stock, errores de inventario o cambios de última hora).</p>
+        <p><strong>Siempre recibirá confirmación oficial antes de procesar su pedido.</strong></p>
+      </div>
+      <button class="disclaimer-btn" onclick="dismissDisclaimer()">Entendido</button>
+    </div>
   </div>
 
 <!-- ── BODY ── -->
@@ -11430,6 +11526,19 @@ function dismissAlert() {
   document.getElementById('priceAlert').style.display = 'none';
   sessionStorage.setItem('priceAlertDismissed', '1');
 }
+
+// Disclaimer de confirmación de disponibilidad
+function dismissDisclaimer() {
+  document.getElementById('disclaimerOverlay').classList.add('hidden');
+  sessionStorage.setItem('disclaimerDismissed', '1');
+}
+
+(function() {
+  var dismissed = sessionStorage.getItem('disclaimerDismissed');
+  if (!dismissed) {
+    document.getElementById('disclaimerOverlay').classList.remove('hidden');
+  }
+})();
 
 </script>
 </body>
