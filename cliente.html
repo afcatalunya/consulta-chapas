@@ -630,6 +630,22 @@
     <button class="price-alert-close" onclick="dismissAlert()">Entendido ✕</button>
   </div>
 
+  <!-- POPUP NUEVOS PRECIOS -->
+  <div class="disclaimer-overlay" id="preciosOverlay" style="display:none">
+    <div class="disclaimer-modal">
+      <div class="disclaimer-header" style="background:linear-gradient(135deg,#b8860b 0%,#d4a017 100%)">
+        <span class="disclaimer-icon">💶</span>
+        <h2>¡Atención — Nuevos precios vigentes!</h2>
+      </div>
+      <div class="disclaimer-content">
+        <p>A partir del <strong>17 de abril de 2026</strong> están en vigor las nuevas tarifas de venta €/kg.</p>
+        <p>Consulta la tabla de <strong>Tarifas Vigentes</strong> en la cabecera de esta página antes de realizar cualquier pedido.</p>
+        <p style="font-size:0.82rem;color:#6b7280">Para pedidos de volumen o condiciones especiales, contacta con tu delegado comercial.</p>
+      </div>
+      <button class="disclaimer-btn" style="background:#b8860b" onclick="closePreciosPopup()">Entendido</button>
+    </div>
+  </div>
+
   <!-- DISCLAIMER DISPONIBILIDAD -->
   <div class="disclaimer-overlay" id="disclaimerOverlay">
     <div class="disclaimer-modal">
@@ -11891,6 +11907,21 @@ function dismissDisclaimer() {
     document.getElementById('disclaimerOverlay').classList.remove('hidden');
   }
 })();
+
+// Popup nuevos precios — visible 1 semana desde 2026-04-17
+(function() {
+  var KEY = 'preciosPopupDismissed_20260417';
+  var EXPIRY = new Date('2026-04-24').getTime();
+  var dismissed = localStorage.getItem(KEY);
+  if (!dismissed && Date.now() < EXPIRY) {
+    document.getElementById('preciosOverlay').style.display = 'flex';
+  }
+})();
+
+function closePreciosPopup() {
+  document.getElementById('preciosOverlay').style.display = 'none';
+  localStorage.setItem('preciosPopupDismissed_20260417', '1');
+}
 
 </script>
 </body>
