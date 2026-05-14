@@ -569,53 +569,16 @@
   <div class="hero-validity" id="validityMsg"></div>
 
   <!-- BANNER PRECIOS -->
-  <div class="price-banner">
-    <div class="banner-head">
-      <div class="banner-head-left">
-        <span>💶</span> Tarifas vigentes — Precio de venta €/kg
-      </div>
-      <div class="banner-note">
-        Precios para <strong>chapas sueltas</strong> · Para volumen, consultar
-      </div>
-    </div>
-    <table class="ptable">
-      <thead>
-        <tr>
-          <th>Aleación</th>
-          <th>Espesor hasta 6 mm</th>
-          <th>Espesor más de 6 mm</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><div class="row-label"><span class="dot dot-g"></span>Aleación 1050 H24</div></td>
-          <td>4,57 €</td>
-          <td>4,77 €</td>
-        </tr>
-        <tr>
-          <td><div class="row-label"><span class="dot dot-b"></span>Aleación 5754 H111</div></td>
-          <td>4,72 €</td>
-          <td>4,92 €</td>
-        </tr>
-        <tr>
-          <td><div class="row-label"><span class="dot dot-b"></span>Aleación 5083 H111</div></td>
-          <td>5,17 €</td>
-          <td>5,37 €</td>
-        </tr>
-        <tr>
-          <td><div class="row-label"><span class="dot dot-b"></span>Chapas Damero</div></td>
-          <td>4,77 €</td>
-          <td>5,37 € <span class="price-note">(5mm)</span></td>
-        </tr>
-        <tr>
-          <td><div class="row-label"><span class="dot dot-y"></span>Aleación 6082 T6</div></td>
-          <td>6,07 €</td>
-          <td>6,32 €</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  
 </header>
+<!-- ── INFO CABECERA CLIENTEPVP ── -->
+<div style="max-width:860px;margin:0 auto 0;padding:18px 24px 0;">
+  <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:16px 22px;font-size:0.82rem;line-height:1.7;color:rgba(255,255,255,0.82);">
+    <p style="margin:0 0 8px 0;">Los precios indicados corresponden a chapas sueltas en las medidas y acabados estándar. Las referencias sin precio visible deben consultarse a través del botón <strong style="color:#fff">✉ Consultar</strong> y recibirá respuesta a la mayor brevedad. Los pedidos pueden realizarse directamente a <a href="mailto:pedidoscat@aluminiosfranco.es" style="color:#a3e635;text-decoration:none;font-weight:600">pedidoscat@aluminiosfranco.es</a>. Para condiciones especiales o pedidos de volumen, contacte con su delegado comercial.</p>
+    <p style="margin:0;font-size:0.78rem;color:rgba(255,255,255,0.5)">Precios válidos hasta el <strong style="color:rgba(255,255,255,0.75)">26 de mayo de 2026</strong></p>
+  </div>
+</div>
+
 
 
   <!-- ALERTA CAMBIO PRECIO -->
@@ -732,7 +695,7 @@
             <th class="r">Peso kg</th>
             <th>Acabado</th>
             <th>Estado</th>
-            <th class="r">€/kg</th>
+            <th class="r">€/ud</th>
             <th></th>
           </tr>
         </thead>
@@ -11762,7 +11725,7 @@ function render() {
       if (precio !== null) {
         const precioUd = r.peso ? (precio * r.peso).toFixed(2) + ' €' : '';
         footerHtml = '<div class="ref-card-footer"><span style="font-family:DM Mono,monospace;font-size:0.78rem;font-weight:700;color:var(--accent)">' +
-          precio.toFixed(2) + ' €/kg' + (precioUd ? ' · ' + precioUd + '/ud' : '') + '</span></div>';
+          (precioUd ? precioUd + '/ud' : '') + '</span></div>';
       } else if (isConsultable(r)) {
         footerHtml = '<div class="ref-card-footer"><button class="btn-consulta" onclick="mailConsulta(' + i + ')">✉ Consultar precio</button></div>';
       }
@@ -11793,7 +11756,7 @@ tbody.innerHTML = slice.map((r, i) => {
     let precioTd = '<td></td><td></td>';
     if (precio !== null) {
       const precioUd = r.peso ? (precio * r.peso).toFixed(2) + ' €' : '—';
-      precioTd = '<td class="td-precio r">' + precio.toFixed(2) + ' €/kg<br><small style="font-size:0.62rem;color:#9ca3af">' + precioUd + '/ud</small></td><td></td>';
+      precioTd = '<td class="td-precio r"><span style="font-family:DM Mono,monospace;font-weight:700">' + precioUd + '/ud</span></td><td></td>';
     } else if (isConsultable(r)) {
       precioTd = '<td></td><td><button class="btn-consulta" onclick="mailConsulta(' + i + ')">✉ Consultar</button></td>';
     }
