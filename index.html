@@ -852,7 +852,7 @@ function copiar(btn, idx, incluirPrecioKg) {
   const precioKg = parseFloat(document.getElementById('precioKg').value) || 0;
   const precioUd = precioKg > 0 && r.peso ? (precioKg * r.peso).toFixed(2) : null;
 
-  let texto = `${r.descripcion}\nEstado: ${r.estado}`;
+  let texto = `${r.descripcion}\nAcabado: ${r.acabado}\nEstado: ${r.estado}`;
   if (precioUd !== null) texto += `\nPrecio unidad: ${precioUd} €`;
   if (incluirPrecioKg && precioKg > 0) texto += `\nPrecio/kg: ${precioKg.toFixed(2)} €`;
 
