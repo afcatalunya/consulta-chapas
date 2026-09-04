@@ -1198,6 +1198,8 @@ function doLogin() {
     document.getElementById('loginPass').focus();
   }
 }
+applyFilters();
+
 // Auto-check session
 if (sessionStorage.getItem('auth') === '1') {
   document.addEventListener('DOMContentLoaded', () => {
