@@ -617,6 +617,99 @@
 <script>
 
 const DATA = [
+  {ref:"CHC0090000",acabado:"CHAPA 2000 X 1000 X 1 COM",descripcion:"CHAPA 2000 X 1000 X 1 COM",peso:4.86,largo:2000,ancho:1000,espesor:1.0,aleacion:1050,temple:"H24",tar:441,mur:0,val:453,estado:"Stock"},
+  {ref:"CHC0090001",acabado:"CHAPA 2000 X 1000 X 0.8 C",descripcion:"CHAPA 2000 X 1000 X 0.8 C",peso:3.78,largo:2000,ancho:1000,espesor:0.8,aleacion:1050,temple:"H24",tar:176,mur:1267,val:848,estado:"Stock"},
+  {ref:"CHC0090002",acabado:"CHAPA 2000 X 1000 X 0.8 1050 H18",descripcion:"CHAPA 2000 X 1000 X 0.8 1050 H18",peso:4.32,largo:2000,ancho:1000,espesor:0.8,aleacion:"1050",temple:"H18",tar:577,mur:1338,val:475,estado:"Stock"},
+  {ref:"CHC0090003",acabado:"CHAPA 2000 X 1000 X 1 1050 H24",descripcion:"CHAPA 2000 X 1000 X 1 1050 H24",peso:5.42,largo:2000,ancho:1000,espesor:1.0,aleacion:"1050",temple:"H24",tar:762,mur:3021,val:1109,estado:"Stock"},
+  {ref:"CHC0090004",acabado:"CHAPA 2000 X 1000 X 1.2 1050 H24",descripcion:"CHAPA 2000 X 1000 X 1.2 1050 H24",peso:6.48,largo:2000,ancho:1000,espesor:1.2,aleacion:"1050",temple:"H24",tar:333,mur:442,val:622,estado:"Stock"},
+  {ref:"CHC0090005",acabado:"CHAPA 2000 X 1000 X 1.5 1050 H24",descripcion:"CHAPA 2000 X 1000 X 1.5 1050 H24",peso:8.1,largo:2000,ancho:1000,espesor:1.5,aleacion:"1050",temple:"H24",tar:241,mur:1956,val:267,estado:"Stock"},
+  {ref:"CHC0090006",acabado:"CHAPA 2000 X 1000 X 2 1050 H24",descripcion:"CHAPA 2000 X 1000 X 2 1050 H24",peso:10.8,largo:2000,ancho:1000,espesor:2.0,aleacion:"1050",temple:"H24",tar:195,mur:953,val:212,estado:"Stock"},
+  {ref:"CHC0090008",acabado:"CHAPA 2000 X 1000 X 3 1050H24",descripcion:"CHAPA 2000 X 1000 X 3 1050H24",peso:16.2,largo:2000,ancho:1000,espesor:3.0,aleacion:"1050",temple:"H24",tar:162,mur:452,val:116,estado:"Stock"},
+  {ref:"CHC0090009",acabado:"CHAPA 2000 X 1000 X 4 1050 H24",descripcion:"CHAPA 2000 X 1000 X 4 1050 H24",peso:21.6,largo:2000,ancho:1000,espesor:4.0,aleacion:"1050",temple:"H24",tar:194,mur:56,val:0,estado:"Stock"},
+  {ref:"CHC0090011",acabado:"CHAPA 2000 X 1000 X 1.5 5005 H14 OXI",descripcion:"CHAPA 2000 X 1000 X 1.5 5005 H14 OXI",peso:8.1,largo:2000,ancho:1000,espesor:1.5,aleacion:"5005",temple:"H14",tar:33,mur:224,val:79,estado:"Stock"},
+  {ref:"CHC0090012",acabado:"CHAPA 2500 X 1250 X 1 1050 H24",descripcion:"CHAPA 2500 X 1250 X 1 1050 H24",peso:8.437,largo:2500,ancho:1250,espesor:1.0,aleacion:"1050",temple:"H24",tar:185,mur:3460,val:337,estado:"Stock"},
+  {ref:"CHC0090013",acabado:"CHAPA 2500 X 1250 X 1.2 1050H24",descripcion:"CHAPA 2500 X 1250 X 1.2 1050H24",peso:10.125,largo:2500,ancho:1250,espesor:1.2,aleacion:"1050",temple:"H24",tar:204,mur:897,val:159,estado:"Stock"},
+  {ref:"CHC0090014",acabado:"CHAPA 2500 X 1250 X 1.5 5754 H111",descripcion:"CHAPA 2500 X 1250 X 1.5 5754 H111",peso:12.656,largo:2500,ancho:1250,espesor:1.5,aleacion:"5754",temple:"H111",tar:116,mur:577,val:302,estado:"Stock"},
+  {ref:"CHC0090015",acabado:"CHAPA 2500 X 1250 X 2 1050H24",descripcion:"CHAPA 2500 X 1250 X 2 1050H24",peso:16.875,largo:2500,ancho:1250,espesor:2.0,aleacion:"1050",temple:"H24",tar:240,mur:864,val:2,estado:"Stock"},
+  {ref:"CHC0090018",acabado:"CHAPA 3000 X 1250 X 1 C.",descripcion:"CHAPA 3000 X 1250 X 1 C.",peso:9.11,largo:3000,ancho:1250,espesor:1.0,aleacion:1050,temple:"H24",tar:478,mur:379,val:225,estado:"Stock"},
+  {ref:"CHC0090019",acabado:"CHAPA 3000 X 1250 X 1 1050H24",descripcion:"CHAPA 3000 X 1250 X 1 1050H24",peso:10.125,largo:3000,ancho:1250,espesor:1.0,aleacion:"1050",temple:"H24",tar:405,mur:1557,val:696,estado:"Stock"},
+  {ref:"CHC0090020",acabado:"CHAPA 3000 X 1250 X 1.2 1050 H24",descripcion:"CHAPA 3000 X 1250 X 1.2 1050 H24",peso:12.15,largo:3000,ancho:1250,espesor:1.2,aleacion:"1050",temple:"H24",tar:397,mur:753,val:175,estado:"Stock"},
+  {ref:"CHC0090021",acabado:"CHAPA 3000 X 1250 X 1.5 1050 H24",descripcion:"CHAPA 3000 X 1250 X 1.5 1050 H24",peso:15.2,largo:3000,ancho:1250,espesor:1.5,aleacion:"1050",temple:"H24",tar:254,mur:841,val:374,estado:"Stock"},
+  {ref:"CHC0090022",acabado:"CHAPA 3000 X 1250 X 2 1050H24",descripcion:"CHAPA 3000 X 1250 X 2 1050H24",peso:20.25,largo:3000,ancho:1250,espesor:2.0,aleacion:"1050",temple:"H24",tar:98,mur:849,val:249,estado:"Stock"},
+  {ref:"CHC0090023",acabado:"CHAPA 2500 X 1250 X 1.5 1050 H24",descripcion:"CHAPA 2500 X 1250 X 1.5 1050 H24",peso:12.656,largo:2500,ancho:1250,espesor:1.5,aleacion:"1050",temple:"H24",tar:51,mur:1361,val:261,estado:"Stock"},
+  {ref:"CHC0090024",acabado:"CHAPA 3000 X 1250 X 3 1050H24",descripcion:"CHAPA 3000 X 1250 X 3 1050H24",peso:30.375,largo:3000,ancho:1250,espesor:3.0,aleacion:"1050",temple:"H24",tar:90,mur:3,val:16,estado:"Stock"},
+  {ref:"CHC0090026",acabado:"CHAPA 3000 X 1250 X 1.2 5005 H14 OXI",descripcion:"CHAPA 3000 X 1250 X 1.2 5005 H14 OXI",peso:12.15,largo:3000,ancho:1250,espesor:1.2,aleacion:"5005",temple:"H14",tar:4,mur:493,val:27,estado:"7/10 d\u00edas"},
+  {ref:"CHC0090029",acabado:"CHAPA 3000 X 1500 X 1 1050H24",descripcion:"CHAPA 3000 X 1500 X 1 1050H24",peso:12.15,largo:3000,ancho:1500,espesor:1.0,aleacion:"1050",temple:"H24",tar:43,mur:1726,val:486,estado:"Stock"},
+  {ref:"CHC0090030",acabado:"CHAPA 3000 X 1500 X 1.2 1050 H24",descripcion:"CHAPA 3000 X 1500 X 1.2 1050 H24",peso:14.58,largo:3000,ancho:1500,espesor:1.2,aleacion:"1050",temple:"H24",tar:92,mur:308,val:62,estado:"Stock"},
+  {ref:"CHC0090031",acabado:"CHAPA 3000 X 1500 X 1.5 1050 H24",descripcion:"CHAPA 3000 X 1500 X 1.5 1050 H24",peso:18.225,largo:3000,ancho:1500,espesor:1.5,aleacion:"1050",temple:"H24",tar:43,mur:501,val:370,estado:"Stock"},
+  {ref:"CHC0090032",acabado:"CHAPA 3000 X 1500 X 2 1050 H24",descripcion:"CHAPA 3000 X 1500 X 2 1050 H24",peso:24.3,largo:3000,ancho:1500,espesor:2.0,aleacion:"1050",temple:"H24",tar:264,mur:360,val:383,estado:"Stock"},
+  {ref:"CHC0090034",acabado:"CHAPA 3000 X 1500 X 3 1050 H24",descripcion:"CHAPA 3000 X 1500 X 3 1050 H24",peso:36.45,largo:3000,ancho:1500,espesor:3.0,aleacion:"1050",temple:"H24",tar:105,mur:301,val:224,estado:"Stock"},
+  {ref:"CHC0090035",acabado:"CHAPA 3000 X 1500 X 4 1050 H24",descripcion:"CHAPA 3000 X 1500 X 4 1050 H24",peso:48.6,largo:3000,ancho:1500,espesor:4.0,aleacion:"1050",temple:"H24",tar:44,mur:24,val:48,estado:"Stock"},
+  {ref:"CHC0090036",acabado:"CHAPA 3000 X 1500 X 5 1050H24",descripcion:"CHAPA 3000 X 1500 X 5 1050H24",peso:60.75,largo:3000,ancho:1500,espesor:5.0,aleacion:"1050",temple:"H24",tar:1,mur:0,val:87,estado:"7/10 d\u00edas"},
+  {ref:"CHC0090037",acabado:"CHAPA 3000 X 1500 X 6 1050H24",descripcion:"CHAPA 3000 X 1500 X 6 1050H24",peso:72.9,largo:3000,ancho:1500,espesor:6.0,aleacion:"1050",temple:"H24",tar:0,mur:0,val:5,estado:"Sin stock"},
+  {ref:"CHC0090039",acabado:"CHAPA 4000 X 1500 X 2 1050 H24",descripcion:"CHAPA 4000 X 1500 X 2 1050 H24",peso:32.4,largo:4000,ancho:1500,espesor:2.0,aleacion:"1050",temple:"H24",tar:120,mur:0,val:6,estado:"Stock"},
+  {ref:"CHC0090047",acabado:"CHAPA 2000 X 1250 X 3 1050 H24",descripcion:"CHAPA 2000 X 1250 X 3 1050 H24",peso:20.25,largo:2000,ancho:1250,espesor:3.0,aleacion:"1050",temple:"H24",tar:50,mur:50,val:41,estado:"Stock"},
+  {ref:"CHC0090049",acabado:"CHAPA 3000 X 1250 X 0.8 1050 H18",descripcion:"CHAPA 3000 X 1250 X 0.8 1050 H18",peso:8.1,largo:3000,ancho:1250,espesor:0.8,aleacion:"1050",temple:"H18",tar:203,mur:596,val:45,estado:"Stock"},
+  {ref:"CHC0090052",acabado:"CHAPA 3020 X 1520 X 8 6082 T6",descripcion:"CHAPA 3020 X 1520 X 8 6082 T6",peso:99.0,largo:3020,ancho:1520,espesor:8.0,aleacion:"6082",temple:"T6",tar:3,mur:6,val:26,estado:"7/10 d\u00edas"},
+  {ref:"CHC0090054",acabado:"CHAPA 3000 X 1500 X 8 6082-T6",descripcion:"CHAPA 3000 X 1500 X 8 6082-T6",peso:100.0,largo:3000,ancho:1500,espesor:8.0,aleacion:"6082",temple:"T6",tar:0,mur:0,val:4,estado:"Sin stock"},
+  {ref:"CHC0090055",acabado:"CHAPA 2000 X 1000 X 2 5005H24",descripcion:"CHAPA 2000 X 1000 X 2 5005H24",peso:10.8,largo:2000,ancho:1000,espesor:2.0,aleacion:"5005",temple:"H24",tar:0,mur:52,val:0,estado:"7/10 d\u00edas"},
+  {ref:"CHC0090058",acabado:"CHAPA 2170 X 900 X 1.5 3105 H14",descripcion:"CHAPA 2170 X 900 X 1.5 3105 H14",peso:7.91,largo:2170,ancho:900,espesor:1.5,aleacion:"3105",temple:"H14",tar:0,mur:0,val:314,estado:"7/10 d\u00edas"},
+  {ref:"CHC0090059",acabado:"CHAPA 2250 X 1000 X 1.5 3105 H14",descripcion:"CHAPA 2250 X 1000 X 1.5 3105 H14",peso:9.11,largo:2250,ancho:1000,espesor:1.5,aleacion:"3105",temple:"H14",tar:0,mur:0,val:187,estado:"7/10 d\u00edas"},
+  {ref:"CHC0090063",acabado:"CHAPA 3000 X 1500 X 1.5 5005 H14 OXI",descripcion:"CHAPA 3000 X 1500 X 1.5 5005 H14 OXI",peso:18.23,largo:3000,ancho:1500,espesor:1.5,aleacion:"5005",temple:"H14",tar:86,mur:319,val:59,estado:"Stock"},
+  {ref:"CHC0090066",acabado:"CHAPA 2050 X 850 X 1.5 1050H24 - 3105H14",descripcion:"CHAPA 2050 X 850 X 1.5 1050H24 - 3105H14",peso:7.058,largo:2050,ancho:850,espesor:1.5,aleacion:"1050",temple:"H24",tar:0,mur:-20,val:347,estado:"7/10 d\u00edas"},
+  {ref:"CHC0090069",acabado:"CHAPA 4000 X 1500 X 1.5 1050 H24",descripcion:"CHAPA 4000 X 1500 X 1.5 1050 H24",peso:24.3,largo:4000,ancho:1500,espesor:1.5,aleacion:"1050",temple:"H24",tar:0,mur:5,val:0,estado:"Sin stock"},
+  {ref:"CHC0090074",acabado:"CHAPA 3000 X 1500 X 6 6082T6",descripcion:"CHAPA 3000 X 1500 X 6 6082T6",peso:72.9,largo:3000,ancho:1500,espesor:6.0,aleacion:"6082",temple:"T6",tar:15,mur:40,val:5,estado:"Stock"},
+  {ref:"CHC0090076",acabado:"CHAPA 2050 X 1000 X 1.5 3105 H14",descripcion:"CHAPA 2050 X 1000 X 1.5 3105 H14",peso:8.3,largo:2050,ancho:1000,espesor:1.5,aleacion:"3105",temple:"H14",tar:0,mur:1,val:25,estado:"7/10 d\u00edas"},
+  {ref:"CHC0090077",acabado:"CHAPA 2200 X 1000 X 1.5 3105 H14",descripcion:"CHAPA 2200 X 1000 X 1.5 3105 H14",peso:8.91,largo:2200,ancho:1000,espesor:1.5,aleacion:"3105",temple:"H14",tar:0,mur:0,val:23,estado:"7/10 d\u00edas"},
+  {ref:"CHC0090080",acabado:"CHAPA 2000 X 1000 X 1 5005 H14 OXI",descripcion:"CHAPA 2000 X 1000 X 1 5005 H14 OXI",peso:5.4,largo:2000,ancho:1000,espesor:1.0,aleacion:"5005",temple:"H14",tar:901,mur:1673,val:214,estado:"Stock"},
+  {ref:"CHC0090081",acabado:"CHAPA 2500 X 1250 X 6 5754 H111",descripcion:"CHAPA 2500 X 1250 X 6 5754 H111",peso:50.62,largo:2500,ancho:1250,espesor:6.0,aleacion:"5754",temple:"H111",tar:15,mur:247,val:16,estado:"Stock"},
+  {ref:"CHC0090083",acabado:"CHAPA 3000 X 1500 X 2 6082 T6",descripcion:"CHAPA 3000 X 1500 X 2 6082 T6",peso:24.3,largo:3000,ancho:1500,espesor:2.0,aleacion:"6082",temple:"T6",tar:26,mur:0,val:96,estado:"Stock"},
+  {ref:"CHC0090084",acabado:"CHAPA 3000 X 1500 X 3 6082T6",descripcion:"CHAPA 3000 X 1500 X 3 6082T6",peso:36.45,largo:3000,ancho:1500,espesor:3.0,aleacion:"6082",temple:"T6",tar:36,mur:75,val:23,estado:"Stock"},
+  {ref:"CHC0090085",acabado:"CHAPA 3000 X 1500 X 4 6082T6",descripcion:"CHAPA 3000 X 1500 X 4 6082T6",peso:48.6,largo:3000,ancho:1500,espesor:4.0,aleacion:"6082",temple:"T6",tar:13,mur:20,val:72,estado:"Stock"},
+  {ref:"CHC0090086",acabado:"CHAPA 3020 X 1520 X 6 6082T6",descripcion:"CHAPA 3020 X 1520 X 6 6082T6",peso:74.37,largo:3020,ancho:1520,espesor:6.0,aleacion:"6082",temple:"T6",tar:72,mur:14,val:0,estado:"Stock"},
+  {ref:"CHC0090087",acabado:"CHAPA 2000 X 1000 X 1.5 1050 H0",descripcion:"CHAPA 2000 X 1000 X 1.5 1050 H0",peso:8.1,largo:2000,ancho:1000,espesor:1.5,aleacion:"1050",temple:"H0",tar:7,mur:0,val:0,estado:"Sin stock"},
+  {ref:"CHC0090091",acabado:"CHAPA 3000 X 1250 X 2 3105 H14",descripcion:"CHAPA 3000 X 1250 X 2 3105 H14",peso:20.25,largo:3000,ancho:1250,espesor:2.0,aleacion:"3105",temple:"H14",tar:0,mur:280,val:0,estado:"7/10 d\u00edas"},
+  {ref:"CHC0090096",acabado:"CHAPA 4000 X 1500 X 2 5754 H111",descripcion:"CHAPA 4000 X 1500 X 2 5754 H111",peso:32.4,largo:4000,ancho:1500,espesor:2.0,aleacion:"5754",temple:"H111",tar:0,mur:0,val:7,estado:"Sin stock"},
+  {ref:"CHC0090099",acabado:"CHAPA 3000 X 1500 X 2.5 6082 T6",descripcion:"CHAPA 3000 X 1500 X 2.5 6082 T6",peso:30.375,largo:3000,ancho:1500,espesor:2.5,aleacion:"6082",temple:"T6",tar:0,mur:22,val:22,estado:"7/10 d\u00edas"},
+  {ref:"CHC0090101",acabado:"CHAPA 3000 X 1500 X 2 5005 H14 OXI",descripcion:"CHAPA 3000 X 1500 X 2 5005 H14 OXI",peso:24.3,largo:3000,ancho:1500,espesor:2.0,aleacion:"5005",temple:"H14",tar:29,mur:0,val:181,estado:"Stock"},
+  {ref:"CHC0090110",acabado:"CHAPA 2200 X 1000 X 2 3105 H14",descripcion:"CHAPA 2200 X 1000 X 2 3105 H14",peso:11.88,largo:2200,ancho:1000,espesor:2.0,aleacion:"3105",temple:"H14",tar:0,mur:0,val:190,estado:"7/10 d\u00edas"},
+  {ref:"CHC0090111",acabado:"CHAPA 2000 X 1000 X 0.7 1050 H18",descripcion:"CHAPA 2000 X 1000 X 0.7 1050 H18",peso:3.78,largo:2000,ancho:1000,espesor:0.7,aleacion:"1050",temple:"H18",tar:0,mur:1060,val:0,estado:"7/10 d\u00edas"},
+  {ref:"CHC0090112",acabado:"CHAPA 3000 X 1250 X 0.9 1050 H18",descripcion:"CHAPA 3000 X 1250 X 0.9 1050 H18",peso:9.11,largo:3000,ancho:1250,espesor:0.9,aleacion:"1050",temple:"H18",tar:0,mur:419,val:0,estado:"7/10 d\u00edas"},
+  {ref:"CHC0090201",acabado:"CHAPA 3000 X 1000 X 1.5 3005 H44 BL/9020 1C",descripcion:"CHAPA 3000 X 1000 X 1.5 3005 H44 BL/9020 1C",peso:12.15,largo:3000,ancho:1000,espesor:1.5,aleacion:"3005",temple:"H44",tar:0,mur:0,val:21,estado:"7/10 d\u00edas"},
+  {ref:"CHC0090203",acabado:"CHAPA 3000 X 1500 X 10 1050 H111",descripcion:"CHAPA 3000 X 1500 X 10 1050 H111",peso:121.5,largo:3000,ancho:1500,espesor:10.0,aleacion:"1050",temple:"H111",tar:8,mur:21,val:18,estado:"7/10 d\u00edas"},
+  {ref:"CHC0090205",acabado:"CHAPA 3000 X 1250 X 0.8 5005 H14",descripcion:"CHAPA 3000 X 1250 X 0.8 5005 H14",peso:8.1,largo:3000,ancho:1250,espesor:0.8,aleacion:"5005",temple:"H14",tar:0,mur:105,val:0,estado:"7/10 d\u00edas"},
+  {ref:"CHC0090206",acabado:"CHAPA 4000 X 2000 X 1.5 1050 H24",descripcion:"CHAPA 4000 X 2000 X 1.5 1050 H24",peso:32.4,largo:4000,ancho:2000,espesor:1.5,aleacion:"1050",temple:"H24",tar:63,mur:11,val:0,estado:"Stock"},
+  {ref:"CHC0090207",acabado:"CHAPA 2000 X 1500 X 1.5 5005 H24",descripcion:"CHAPA 2000 X 1500 X 1.5 5005 H24",peso:12.15,largo:2000,ancho:1500,espesor:1.5,aleacion:"5005",temple:"H24",tar:0,mur:41,val:0,estado:"7/10 d\u00edas"},
+  {ref:"CHC0090208",acabado:"CHAPA 2400 X 1500 X 1.5 5005 H24",descripcion:"CHAPA 2400 X 1500 X 1.5 5005 H24",peso:14.58,largo:2400,ancho:1500,espesor:1.5,aleacion:"5005",temple:"H24",tar:0,mur:10,val:0,estado:"Sin stock"},
+  {ref:"CHC0090210",acabado:"CHAPA 4000 X 2000 X 2 1050 H24",descripcion:"CHAPA 4000 X 2000 X 2 1050 H24",peso:43.2,largo:4000,ancho:2000,espesor:2.0,aleacion:"1050",temple:"H24",tar:0,mur:128,val:0,estado:"7/10 d\u00edas"},
+  {ref:"CHC0090211",acabado:"CHAPA 2500 X 1500 X 1.5 5754 H111",descripcion:"CHAPA 2500 X 1500 X 1.5 5754 H111",peso:15.188,largo:2500,ancho:1500,espesor:1.5,aleacion:"5754",temple:"H111",tar:178,mur:1,val:0,estado:"Stock"},
+  {ref:"CHC0090212",acabado:"CHAPA 4000 X 1500 X 3 1050 H24",descripcion:"CHAPA 4000 X 1500 X 3 1050 H24",peso:48.6,largo:4000,ancho:1500,espesor:3.0,aleacion:"1050",temple:"H24",tar:30,mur:0,val:6,estado:"Stock"},
+  {ref:"CHC0090216",acabado:"CHAPA 3000 X 1250 X 1 5005 H14 OXI",descripcion:"CHAPA 3000 X 1250 X 1 5005 H14 OXI",peso:10.125,largo:3000,ancho:1250,espesor:1.0,aleacion:"5005",temple:"H14",tar:16,mur:769,val:176,estado:"Stock"},
+  {ref:"CHC0090217",acabado:"CHAPA 3000 X 1250 X 1.5 5005 H14 OXI",descripcion:"CHAPA 3000 X 1250 X 1.5 5005 H14 OXI",peso:15.1875,largo:3000,ancho:1250,espesor:1.5,aleacion:"5005",temple:"H14",tar:1,mur:385,val:130,estado:"7/10 d\u00edas"},
+  {ref:"CHC0090218",acabado:"CHAPA 3000 X 1500 X 1.2 5005 H14 OXI",descripcion:"CHAPA 3000 X 1500 X 1.2 5005 H14 OXI",peso:14.58,largo:3000,ancho:1500,espesor:1.2,aleacion:"5005",temple:"H14",tar:0,mur:512,val:142,estado:"7/10 d\u00edas"},
+  {ref:"CHC0090230",acabado:"CHAPA 2000 X 1000 X 0.8 5005 H14 OXI",descripcion:"CHAPA 2000 X 1000 X 0.8 5005 H14 OXI",peso:4.32,largo:2000,ancho:1000,espesor:0.8,aleacion:"5005",temple:"H14",tar:102,mur:1298,val:297,estado:"Stock"},
+  {ref:"CHC0090231",acabado:"CHAPA 2000 X 1000 X 1.2 5005 H14 OXI",descripcion:"CHAPA 2000 X 1000 X 1.2 5005 H14 OXI",peso:6.48,largo:2000,ancho:1000,espesor:1.2,aleacion:"5005",temple:"H14",tar:586,mur:512,val:0,estado:"Stock"},
+  {ref:"CHC0090304",acabado:"CHAPA 2500 X 1250 X 1 3105 H14",descripcion:"CHAPA 2500 X 1250 X 1 3105 H14",peso:8.44,largo:2500,ancho:1250,espesor:1.0,aleacion:"3105",temple:"H14",tar:0,mur:1220,val:0,estado:"7/10 d\u00edas"},
+  {ref:"CHC0090305",acabado:"CHAPA 3000 X 1250 X 1.2 3105 H14",descripcion:"CHAPA 3000 X 1250 X 1.2 3105 H14",peso:12.15,largo:3000,ancho:1250,espesor:1.2,aleacion:"3105",temple:"H14",tar:0,mur:339,val:5,estado:"7/10 d\u00edas"},
+  {ref:"CHC0090306",acabado:"CHAPA 2000 X 1000 X 0.8 3105 H14",descripcion:"CHAPA 2000 X 1000 X 0.8 3105 H14",peso:4.32,largo:2000,ancho:1000,espesor:0.8,aleacion:"3105",temple:"H14",tar:0,mur:934,val:0,estado:"7/10 d\u00edas"},
+  {ref:"CHC0090307",acabado:"CHAPA 2500 X 1250 X 2 3105 H14",descripcion:"CHAPA 2500 X 1250 X 2 3105 H14",peso:16.87,largo:2500,ancho:1250,espesor:2.0,aleacion:"3105",temple:"H14",tar:0,mur:192,val:0,estado:"7/10 d\u00edas"},
+  {ref:"CHC0090308",acabado:"CHAPA 3000 X 1500 X 2 3105 H14",descripcion:"CHAPA 3000 X 1500 X 2 3105 H14",peso:24.3,largo:3000,ancho:1500,espesor:2.0,aleacion:"3105",temple:"H14",tar:0,mur:24,val:0,estado:"7/10 d\u00edas"},
+  {ref:"CHC0092011",acabado:"CHAPA 3000 X 1500 X 5 6082 T6",descripcion:"CHAPA 3000 X 1500 X 5 6082 T6",peso:60.75,largo:3000,ancho:1500,espesor:5.0,aleacion:"6082",temple:"T6",tar:21,mur:13,val:36,estado:"Stock"},
+  {ref:"CHC0092012",acabado:"CHAPA 3000 X 1500 X 1.5 6082 T6",descripcion:"CHAPA 3000 X 1500 X 1.5 6082 T6",peso:18.23,largo:3000,ancho:1500,espesor:1.5,aleacion:"6082",temple:"T6",tar:64,mur:0,val:186,estado:"Stock"},
+  {ref:"CHC0092013",acabado:"CHAPA 2500 X 1250 X 1 5754 H111",descripcion:"CHAPA 2500 X 1250 X 1 5754 H111",peso:8.44,largo:2500,ancho:1250,espesor:1.0,aleacion:"5754",temple:"H111",tar:0,mur:0,val:8,estado:"Sin stock"},
+  {ref:"CHC0092014",acabado:"CHAPA 2500 X 1250 X 2.5 1050 H24",descripcion:"CHAPA 2500 X 1250 X 2.5 1050 H24",peso:21.09,largo:2500,ancho:1250,espesor:2.5,aleacion:"1050",temple:"H24",tar:0,mur:38,val:0,estado:"7/10 d\u00edas"},
+  {ref:"CHC0092015",acabado:"CHAPA 3000 X 1500 X 2.5 5005 H24",descripcion:"CHAPA 3000 X 1500 X 2.5 5005 H24",peso:30.38,largo:3000,ancho:1500,espesor:2.5,aleacion:"5005",temple:"H24",tar:17,mur:0,val:0,estado:"Stock"},
+  {ref:"CHC0092016",acabado:"CHAPA 2500 X 1250 X 2.5 5005 H24",descripcion:"CHAPA 2500 X 1250 X 2.5 5005 H24",peso:21.09,largo:2500,ancho:1250,espesor:2.5,aleacion:"5005",temple:"H24",tar:78,mur:46,val:0,estado:"Stock"},
+  {ref:"CHC0092017",acabado:"CHAPA 2500 X 1250 X 2 5005 H24 OXI",descripcion:"CHAPA 2500 X 1250 X 2 5005 H24 OXI",peso:16.88,largo:2500,ancho:1250,espesor:2.0,aleacion:"5005",temple:"H24",tar:41,mur:59,val:44,estado:"Stock"},
+  {ref:"CHC0092018",acabado:"CHAPA 2500 X 1250 X 3 5005 H24",descripcion:"CHAPA 2500 X 1250 X 3 5005 H24",peso:25.32,largo:2500,ancho:1250,espesor:3.0,aleacion:"5005",temple:"H24",tar:2,mur:0,val:0,estado:"Sin stock"},
+  {ref:"CHC0092019",acabado:"CHAPA 3000 X 1500 X 3 5005 H24",descripcion:"CHAPA 3000 X 1500 X 3 5005 H24",peso:36.45,largo:3000,ancho:1500,espesor:3.0,aleacion:"5005",temple:"H24",tar:0,mur:1,val:0,estado:"Sin stock"},
+  {ref:"CHC0092020",acabado:"CHAPA 3600 X 1500 X 4 1050 H24",descripcion:"CHAPA 3600 X 1500 X 4 1050 H24",peso:58.32,largo:3600,ancho:1500,espesor:4.0,aleacion:"1050",temple:"H24",tar:0,mur:13,val:0,estado:"7/10 d\u00edas"},
+  {ref:"CHC0092023",acabado:"CHAPA 2350 X 1500 X 1.5 5754 H111",descripcion:"CHAPA 2350 X 1500 X 1.5 5754 H111",peso:14.28,largo:2350,ancho:1500,espesor:1.5,aleacion:"5754",temple:"H111",tar:199,mur:0,val:0,estado:"Stock"},
+  {ref:"CHC0092027",acabado:"CHAPA 4000 X 1000 X 3 1050 H24",descripcion:"CHAPA 4000 X 1000 X 3 1050 H24",peso:32.4,largo:4000,ancho:1000,espesor:3.0,aleacion:"1050",temple:"H24",tar:0,mur:70,val:0,estado:"7/10 d\u00edas"},
+  {ref:"CHC0092029",acabado:"CHAPA 4000 X 1500 X 2 5005 H24 OXI",descripcion:"CHAPA 4000 X 1500 X 2 5005 H24 OXI",peso:32.4,largo:4000,ancho:1500,espesor:2.0,aleacion:"5005",temple:"H24",tar:0,mur:4,val:0,estado:"Sin stock"},
+  {ref:"CHC0092031",acabado:"CHAPA 3000 X 2000 X 1.5 1050 H24",descripcion:"CHAPA 3000 X 2000 X 1.5 1050 H24",peso:24.3,largo:3000,ancho:2000,espesor:1.5,aleacion:"1050",temple:"H24",tar:90,mur:36,val:0,estado:"Stock"},
+  {ref:"CHC0092033",acabado:"CHAPA 3150 X 1500 X 6 6082 T6",descripcion:"CHAPA 3150 X 1500 X 6 6082 T6",peso:76.55,largo:3150,ancho:1500,espesor:6.0,aleacion:"6082",temple:"T6",tar:0,mur:0,val:6,estado:"Sin stock"},
+  {ref:"CHC0092034",acabado:"CHAPA 2150 X 1500 X 6 6082 T6",descripcion:"CHAPA 2150 X 1500 X 6 6082 T6",peso:52.245,largo:2150,ancho:1500,espesor:6.0,aleacion:"6082",temple:"T6",tar:0,mur:44,val:0,estado:"7/10 d\u00edas"},
   {ref:"CHE0095001",acabado:"CH.GR.ARROZ 13420 x 2460 x 2.6",descripcion:"CH.GR.ARROZ 13420 x 2460 x 2.6",peso:235.0,largo:13420,ancho:2460,espesor:2.6,aleacion:"ARROZ",temple:"ARROZ",tar:169,mur:34,val:0,estado:"Stock"},
   {ref:"CHE0095006",acabado:"CHAPA 3000 X 1500 X 2 5754 H32",descripcion:"CHAPA 3000 X 1500 X 2 5754 H32",peso:24.3,largo:3000,ancho:1500,espesor:2.0,aleacion:"5754",temple:"H32",tar:41,mur:204,val:36,estado:"Stock"},
   {ref:"CHE0095014",acabado:"CHAPA GR.ARROZ 2500 X 1250 X 2.5",descripcion:"CHAPA GR.ARROZ 2500 X 1250 X 2.5",peso:22.0,largo:2500,ancho:1250,espesor:2.5,aleacion:"ARROZ",temple:"ARROZ",tar:116,mur:164,val:3,estado:"Stock"},
@@ -1091,6 +1184,19 @@ function copiar(btn, idx, incluirPrecioKg) {
   document.body.appendChild(ta); ta.focus(); ta.select(); ta.setSelectionRange(0, 99999);
   try { document.execCommand('copy'); document.body.removeChild(ta); doFeedback(); }
   catch(e) { document.body.removeChild(ta); navigator.clipboard.writeText(texto).then(doFeedback).catch(doFeedback); }
+}
+
+function doLogin() {
+  const pw = document.getElementById('loginPass').value;
+  if (pw === 'Murcia') {
+    sessionStorage.setItem('auth', '1');
+    document.getElementById('loginOverlay').style.display = 'none';
+    document.getElementById('loginError').textContent = '';
+  } else {
+    document.getElementById('loginError').textContent = 'Contraseña incorrecta';
+    document.getElementById('loginPass').value = '';
+    document.getElementById('loginPass').focus();
+  }
 }
 // Auto-check session
 if (sessionStorage.getItem('auth') === '1') {
