@@ -1321,6 +1321,11 @@ const PRICE_TABLE = {
   '6082':  { le6: 6.25, gt6: 6.5 },
 };
 
+// Formato de numero espanol: coma decimal. Sin esto la misma pagina escribe
+// "4,68 €" en la tarifa de arriba y "4.68 €/kg" en el resultado.
+function fmtNum(n, dec) {
+  return Number(n).toLocaleString('es-ES', {minimumFractionDigits: dec, maximumFractionDigits: dec});
+}
 function getPrecioKg(r) {
   // Solo acabado S/A o P.V.C.-1C
   const acab = (r.acabado || '').trim();
@@ -1332,6 +1337,13 @@ function getPrecioKg(r) {
   const isStd = STD_FORMATS.some(([l,a]) => r.largo == l && r.ancho == a);
   if (!isStd) return null;
   const esp = parseFloat(r.espesor) || 0;
+  // El DAMERO no sigue la regla de las columnas: solo tiene tarifa hasta 5 mm,
+  // y el de 5 mm va al precio alto (por eso la tabla lo rotula «5 mm»).
+  // Por encima de 5 mm NO hay tarifa: sale «Consultar», no un precio inventado.
+  if (key === 'DAMERO') {
+    if (esp > 5) return null;
+    return esp < 5 ? PRICE_TABLE[key].le6 : PRICE_TABLE[key].gt6;
+  }
   return esp <= 6 ? PRICE_TABLE[key].le6 : PRICE_TABLE[key].gt6;
 }
 
@@ -1463,7 +1475,7 @@ function render() {
       const precio = getPrecioKg(r);
       let footerHtml = '';
       if (precio !== null) {
-        const precioUd = r.peso ? (precio * r.peso).toFixed(2) + ' €' : '';
+        const precioUd = r.peso ? fmtNum(precio * r.peso, 2) + ' €' : '';
         footerHtml = '<div class="ref-card-footer"><span style="font-family:DM Mono,monospace;font-size:0.78rem;font-weight:700;color:var(--accent)">' +
           (precioUd ? precioUd + '/ud' : '') + '</span></div>';
       } else if (isConsultable(r)) {
@@ -1479,7 +1491,7 @@ function render() {
         '<div class="ref-card-item"><span class="ref-card-label">Espesor</span><span class="ref-card-val mono">' + (r.espesor ?? '—') + '</span></div>' +
         '<div class="ref-card-item"><span class="ref-card-label">Aleación</span><span class="ref-card-val">' + r.aleacion + '</span></div>' +
         '<div class="ref-card-item"><span class="ref-card-label">Temple</span><span class="ref-card-val">' + r.temple + '</span></div>' +
-        '<div class="ref-card-item"><span class="ref-card-label">Peso kg</span><span class="ref-card-val mono">' + (r.peso ? r.peso.toFixed(3) : '—') + '</span></div>' +
+        '<div class="ref-card-item"><span class="ref-card-label">Peso kg</span><span class="ref-card-val mono">' + (r.peso ? fmtNum(r.peso, 3) : '—') + '</span></div>' +
         '<div class="ref-card-item" style="grid-column:1/-1"><span class="ref-card-label">Acabado</span><span class="ref-card-val">' + (r.acabado || '—') + '</span></div>' +
         '</div>' + footerHtml + '</div>';
     }).join('');
@@ -1495,7 +1507,7 @@ tbody.innerHTML = slice.map((r, i) => {
     const est = estadoCliente(r);
     let precioTd = '<td></td><td></td>';
     if (precio !== null) {
-      const precioUd = r.peso ? (precio * r.peso).toFixed(2) + ' €' : '—';
+      const precioUd = r.peso ? fmtNum(precio * r.peso, 2) + ' €' : '—';
       precioTd = '<td class="td-precio r"><span style="font-family:DM Mono,monospace;font-weight:700">' + precioUd + '/ud</span></td><td></td>';
     } else if (isConsultable(r)) {
       precioTd = '<td></td><td><button class="btn-consulta" onclick="mailConsulta(' + i + ')">✉ Consultar</button></td>';
@@ -1508,7 +1520,7 @@ tbody.innerHTML = slice.map((r, i) => {
       '<td class="td-num">' + (r.espesor ?? '—') + '</td>' +
       '<td>' + r.aleacion + '</td>' +
       '<td>' + r.temple + '</td>' +
-      '<td class="td-num">' + (r.peso ? r.peso.toFixed(3) : '—') + '</td>' +
+      '<td class="td-num">' + (r.peso ? fmtNum(r.peso, 3) : '—') + '</td>' +
       '<td><span class="td-acabado">' + (r.acabado || '—') + '</span></td>' +
       '<td><span class="badge ' + bc(est) + '">' + est + '</span></td>' +
       precioTd +

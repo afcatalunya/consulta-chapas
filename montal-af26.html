@@ -753,8 +753,8 @@
         </tr>
         <tr>
           <td><div class="row-label"><span class="dot dot-b"></span>Xapes Damer</div></td>
-          <td class="tp" data-ale="DAMERO" data-t="le6">—</td>
-          <td class="tp" data-ale="DAMERO" data-t="gt6">— <span class="price-note">(5mm)</span></td>
+          <td class="tp" data-ale="DAMERO" data-t="le6">— <span class="price-note">(fins a 4 mm)</span></td>
+          <td class="tp" data-ale="DAMERO" data-t="gt6">— <span class="price-note">(5 mm)</span></td>
         </tr>
         <tr>
           <td><div class="row-label"><span class="dot dot-y"></span><span class="th-llarg">Aliatge </span>6082 T6</div></td>
@@ -920,6 +920,13 @@ function getPrecioKg(r) {
   const isStd = STD_FORMATS.some(([l,a]) => r.largo == l && r.ancho == a);
   if (!isStd) return null;
   const esp = parseFloat(r.espesor) || 0;
+  // El DAMERO no sigue la regla de las columnas: solo tiene tarifa hasta 5 mm,
+  // y el de 5 mm va al precio alto (por eso la tabla lo rotula «5 mm»).
+  // Por encima de 5 mm NO hay tarifa: sale «Consultar», no un precio inventado.
+  if (key === 'DAMERO') {
+    if (esp > 5) return null;
+    return esp < 5 ? PRICE_TABLE[key].le6 : PRICE_TABLE[key].gt6;
+  }
   return esp <= 6 ? PRICE_TABLE[key].le6 : PRICE_TABLE[key].gt6;
 }
 
