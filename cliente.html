@@ -555,6 +555,96 @@
     box-shadow: 0 4px 12px rgba(45,122,45,0.2);
   }
 
+
+  /* ── CORREO PREPARADO ──
+     El mailto: SOLO abre algo si el equipo tiene un programa de correo
+     asociado al protocolo. En los equipos que usan webmail el clic no hacia
+     absolutamente nada y no avisaba de nada. Por eso el texto sale siempre en
+     un cuadro: con copiar y con los enlaces al webmail, funciona en cualquier
+     equipo. */
+  .mail-overlay {
+    position: fixed; inset: 0; z-index: 9998;
+    background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 16px;
+  }
+  .mail-overlay.hidden { display: none; }
+  .mail-modal {
+    position: relative; background: #fff; border-radius: 14px;
+    width: 100%; max-width: 560px; max-height: 92vh;
+    display: flex; flex-direction: column; overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    animation: mailUp 0.25s ease;
+  }
+  @keyframes mailUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+  .mail-header {
+    background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+    padding: 16px 52px 16px 20px; color: #fff;
+    display: flex; align-items: center; gap: 12px; flex-shrink: 0;
+  }
+  .mail-header h2 { margin: 0; font-size: 1.05rem; font-weight: 700; }
+  .mail-icon { font-size: 1.5rem; flex-shrink: 0; }
+  .mail-close {
+    position: absolute; top: 12px; right: 12px;
+    width: 30px; height: 30px; border-radius: 8px;
+    background: rgba(255,255,255,0.18); color: #fff;
+    border: 1px solid rgba(255,255,255,0.35);
+    font-size: 0.85rem; line-height: 1; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .mail-close:hover { background: rgba(255,255,255,0.32); }
+  .mail-body { padding: 18px 20px 20px; overflow-y: auto; }
+  .mail-row {
+    display: flex; gap: 10px; align-items: baseline;
+    padding: 5px 0; border-bottom: 1px solid var(--border);
+    font-size: 0.82rem;
+  }
+  .mail-lbl {
+    flex: 0 0 76px; color: var(--text-muted);
+    font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .mail-val { color: var(--text); font-weight: 600; word-break: break-word; }
+  .mail-qty {
+    display: flex; align-items: center; gap: 10px;
+    margin: 14px 0 10px; font-size: 0.82rem; font-weight: 700; color: var(--text);
+  }
+  .mail-qty input {
+    width: 120px; padding: 8px 10px; border-radius: 8px;
+    border: 1px solid var(--border2); background: var(--surface2);
+    font-family: 'DM Mono', monospace; font-size: 0.85rem; color: var(--text);
+  }
+  .mail-qty input:focus { outline: none; border-color: var(--accent); background: #fff; }
+  #mailTxt {
+    width: 100%; box-sizing: border-box; height: 196px; resize: vertical;
+    padding: 12px; border-radius: 10px;
+    border: 1px solid var(--border); background: var(--surface2);
+    font-family: 'DM Mono', monospace; font-size: 0.74rem; line-height: 1.6;
+    color: var(--text);
+  }
+  .mail-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .mail-btn-main, .mail-btn-sec {
+    flex: 1 1 150px; padding: 11px 14px; border-radius: 9px;
+    font-family: 'Outfit', sans-serif; font-size: 0.84rem; font-weight: 700;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .mail-btn-main { background: var(--accent); color: #fff; border: 1px solid var(--accent); }
+  .mail-btn-main:hover { background: #1b5e20; border-color: #1b5e20; }
+  .mail-btn-sec { background: #fff; color: var(--accent); border: 1px solid var(--border2); }
+  .mail-btn-sec:hover { border-color: var(--accent); background: var(--accent-light); }
+  .mail-help {
+    margin: 12px 0 0; font-size: 0.72rem; line-height: 1.6; color: var(--text-muted);
+  }
+  .mail-help strong { color: var(--accent); }
+  .mail-help a { color: var(--accent); font-weight: 700; }
+  @media (max-width: 768px) {
+    .mail-modal { max-height: 94vh; }
+    #mailTxt { height: 168px; font-size: 0.7rem; }
+    .mail-btn-main, .mail-btn-sec { flex: 1 1 100%; }
+  }
 </style>
 </head>
 <body>
@@ -751,6 +841,36 @@
 
 
 
+
+
+<!-- ── CORREO PREPARADO ──
+     No es decoración: el mailto: solo no funciona en los equipos que usan
+     webmail, y ahí el botón no hacía nada. Aquí el texto está siempre a la vista. -->
+<div class="mail-overlay hidden" id="mailOverlay">
+  <div class="mail-modal" role="dialog" aria-modal="true" aria-labelledby="mailTitol">
+    <div class="mail-header">
+      <span class="mail-icon">✉</span>
+      <h2 id="mailTitol">Correo preparado</h2>
+    </div>
+    <button class="mail-close" id="mailTancar" aria-label="Cerrar">✕</button>
+    <div class="mail-body">
+      <div class="mail-row"><span class="mail-lbl">Para</span><span class="mail-val">danielf@aluminiosfranco.es</span></div>
+      <div class="mail-row"><span class="mail-lbl">Asunto</span><span class="mail-val" id="mailAss"></span></div>
+      <label class="mail-qty" for="mailQty">Cantidad (uds.)
+        <input type="number" id="mailQty" min="1" step="1" inputmode="numeric" placeholder="p. ej. 10">
+      </label>
+      <textarea id="mailTxt" spellcheck="false" aria-label="Texto del correo"></textarea>
+      <div class="mail-actions">
+        <button class="mail-btn-main" id="mailObrir">✉ Abrir en mi correo</button>
+        <button class="mail-btn-sec" id="mailCopiar">⧉ Copiar el texto</button>
+      </div>
+      <p class="mail-help">Si no se abre tu programa de correo, copia el texto y envíalo a
+        <strong>danielf@aluminiosfranco.es</strong>, o ábrelo directamente en
+        <a id="mailGmail" href="#" target="_blank" rel="noopener">Gmail</a> ·
+        <a id="mailOutlook" href="#" target="_blank" rel="noopener">Outlook</a>.</p>
+    </div>
+  </div>
+</div>
 
 <script>
 
@@ -1434,24 +1554,119 @@ function isConsultable(r) {
   return getPrecioKg(r) === null;
 }
 
+// ── CORREOS HACIA ALUMINIOS FRANCO ──
+// 🔴 EL mailto: SOLO NO BASTA. Unicamente abre algo si el equipo tiene un
+//   programa de correo asociado al protocolo. En los equipos que usan webmail
+//   (Gmail u Outlook en el navegador) Windows no tiene nada registrado y el
+//   clic NO HACE NADA: ni se abre nada ni sale ningun aviso. Por eso el texto
+//   sale siempre en un cuadro, con copiar y con enlaces al webmail. El mailto:
+//   queda como primera opcion para quien lo tenga bien, pero ya no es la unica.
+// El salto de linea es NL, no una secuencia escapada: este fichero pasa por
+// generadores y el escapado del salto de linea ya se ha perdido mas de una vez.
+var MAIL_DEST = 'danielf@aluminiosfranco.es';
+var NL = String.fromCharCode(13, 10);
+var _mailCtx = null;
+
+function _mailNum(v) { return String(v).replace('.', ','); }
+
+function _mailFicha(r) {
+  return 'Referencia:      ' + r.ref + NL
+    + 'Descripción:     ' + r.descripcion + NL
+    + 'Dimensiones:     ' + r.largo + ' x ' + r.ancho + ' x ' + _mailNum(r.espesor) + ' mm' + NL
+    + 'Aleación:        ' + r.aleacion + NL
+    + 'Temple:          ' + r.temple + NL
+    + 'Acabado:         ' + (r.acabado || 'S/A') + NL;
+}
+
+function _mailQt(q) { return q ? q + ' uds.' : '_____ uds.'; }
+
+function _mailTxtPrecio(r, q) {
+  var est = estadoCliente(r);
+  return 'Buenos días,' + NL + NL
+    + 'Os pedimos precio de la siguiente chapa:' + NL + NL
+    + _mailFicha(r)
+    + 'Disponibilidad:  ' + est + NL
+    + NL + 'Cantidad que necesitamos: ' + _mailQt(q) + NL + NL
+    + (est === '7/10 días'
+        ? '¿Nos podéis confirmar también si hay existencias y en qué plazo la podríais servir?' + NL + NL
+        : '')
+    + 'Muchas gracias.';
+}
+
 function mailConsulta(i) {
   var r = window._sliceData[i];
-  var est = estadoCliente(r);
-  var nl = '%0D%0A';
-  var subject = encodeURIComponent('Consulta chapa - ' + r.ref);
-  var body = 'Buenos dias,' + nl + nl
-    + 'Solicito informacion sobre la siguiente chapa:' + nl + nl
-    + 'Referencia:     ' + encodeURIComponent(r.ref) + nl
-    + 'Descripcion:    ' + encodeURIComponent(r.descripcion) + nl
-    + 'Dimensiones:    ' + r.largo + ' x ' + r.ancho + ' x ' + r.espesor + ' mm' + nl
-    + 'Aleacion:       ' + encodeURIComponent(r.aleacion) + nl
-    + 'Temple:         ' + encodeURIComponent(r.temple) + nl
-    + 'Acabado:        ' + encodeURIComponent(r.acabado || 'S/A') + nl
-    + 'Disponibilidad: ' + encodeURIComponent(est) + nl + nl
-    + 'Cantidad necesaria: _____ uds.' + nl + nl
-    + 'Muchas gracias.';
-  window.location.href = 'mailto:danielf@aluminiosfranco.es?subject=' + subject + '&body=' + body;
+  if (!r) return;
+  obrirCorreu('Consulta de precio - ' + r.ref, function (q) { return _mailTxtPrecio(r, q); });
 }
+
+function obrirCorreu(assumpte, fnCos) {
+  _mailCtx = { assumpte: assumpte, cos: fnCos };
+  document.getElementById('mailAss').textContent = assumpte;
+  var q = document.getElementById('mailQty');
+  q.value = '';
+  _mailPintar();
+  document.getElementById('mailOverlay').classList.remove('hidden');
+  setTimeout(function () { try { q.focus(); } catch (e) {} }, 60);
+}
+
+function tancarCorreu() {
+  document.getElementById('mailOverlay').classList.add('hidden');
+  _mailCtx = null;
+}
+
+function _mailPintar() {
+  if (!_mailCtx) return;
+  var qn = parseInt(document.getElementById('mailQty').value, 10);
+  var cos = _mailCtx.cos(qn > 0 ? qn : null);
+  var ta = document.getElementById('mailTxt');
+  ta.value = cos;
+  // Que el texto empiece por el principio: el cuadro se queda donde lo dejaron.
+  ta.scrollTop = 0;
+  var a = encodeURIComponent(_mailCtx.assumpte);
+  var b = encodeURIComponent(cos);
+  document.getElementById('mailGmail').href =
+    'https://mail.google.com/mail/?view=cm&fs=1&to=' + MAIL_DEST + '&su=' + a + '&body=' + b;
+  document.getElementById('mailOutlook').href =
+    'https://outlook.office.com/mail/deeplink/compose?to=' + MAIL_DEST + '&subject=' + a + '&body=' + b;
+}
+
+(function () {
+  var ov = document.getElementById('mailOverlay');
+  if (!ov) return;
+  document.getElementById('mailQty').addEventListener('input', _mailPintar);
+  document.getElementById('mailTancar').addEventListener('click', tancarCorreu);
+  ov.addEventListener('click', function (e) { if (e.target === ov) tancarCorreu(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !ov.classList.contains('hidden')) tancarCorreu();
+  });
+
+  document.getElementById('mailObrir').addEventListener('click', function () {
+    if (!_mailCtx) return;
+    // El texto que se envia es el del cuadro: si lo han retocado, vale el suyo.
+    var a = encodeURIComponent(_mailCtx.assumpte);
+    var b = encodeURIComponent(document.getElementById('mailTxt').value);
+    window.location.href = 'mailto:' + MAIL_DEST + '?subject=' + a + '&body=' + b;
+  });
+
+  document.getElementById('mailCopiar').addEventListener('click', function () {
+    var ta = document.getElementById('mailTxt');
+    var btn = this, prev = btn.textContent;
+    var avisa = function (ok) {
+      btn.textContent = ok ? '✓ Texto copiado' : '⚠ Selecciónalo y copia';
+      setTimeout(function () { btn.textContent = prev; }, 2200);
+    };
+    var aLaVella = function () {
+      // Sin permiso de portapapeles aun se puede copiar la seleccion.
+      try { ta.focus(); ta.select(); avisa(document.execCommand('copy')); }
+      catch (e) { avisa(false); }
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(ta.value).then(function () { avisa(true); }, aLaVella);
+    } else {
+      aLaVella();
+    }
+  });
+})();
 
 const PAGE_SIZE = 30;
 let filtered = [];

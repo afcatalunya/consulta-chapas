@@ -674,9 +674,115 @@
   .disclaimer-btn:hover {
     background: var(--brand-deep);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(45,122,45,0.2);
+    box-shadow: 0 4px 12px rgba(0,54,124,0.25);
   }
 
+
+  /* ── BOTO DE CONFIRMAR ESTOC (nomes a les 7/10 dies) ──
+     Ambre com el seu distintiu, no blau: el blau es "preu" i aquest boto
+     no pregunta per preu, pregunta si realment hi ha existencies. */
+  .btn-estoc {
+    display: inline-flex; align-items: center; gap: 4px;
+    margin-top: 4px; padding: 3px 9px; border-radius: 6px;
+    background: var(--orange-bg); color: var(--orange);
+    border: 1px solid var(--orange-border);
+    font-size: 0.66rem; font-weight: 700;
+    cursor: pointer; font-family: 'Outfit', sans-serif;
+    transition: all 0.15s; white-space: nowrap;
+  }
+  .btn-estoc:hover { background: var(--orange); color: #fff; border-color: var(--orange); }
+
+  /* ── CORREU PREPARAT ──
+     El mailto: NOMES obre res si l'equip te un programa de correu associat.
+     Als equips que fan servir webmail el clic no feia absolutament res i no
+     avisava de res. Per aixo el text surt sempre en un quadre: amb copiar i
+     amb els enllacos al webmail, funciona a qualsevol equip. */
+  .mail-overlay {
+    position: fixed; inset: 0; z-index: 9998;
+    background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 16px;
+  }
+  .mail-overlay.hidden { display: none; }
+  .mail-modal {
+    position: relative; background: #fff; border-radius: 14px;
+    width: 100%; max-width: 560px; max-height: 92vh;
+    display: flex; flex-direction: column; overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    animation: slideUp 0.25s ease;
+  }
+  .mail-header {
+    background: linear-gradient(135deg, var(--brand) 0%, var(--brand-deep) 100%);
+    padding: 16px 52px 16px 20px; color: #fff;
+    display: flex; align-items: center; gap: 12px; flex-shrink: 0;
+  }
+  .mail-header h2 { margin: 0; font-size: 1.05rem; font-weight: 700; }
+  .mail-icon { font-size: 1.5rem; flex-shrink: 0; }
+  .mail-close {
+    position: absolute; top: 12px; right: 12px;
+    width: 30px; height: 30px; border-radius: 8px;
+    background: rgba(255,255,255,0.18); color: #fff;
+    border: 1px solid rgba(255,255,255,0.35);
+    font-size: 0.85rem; line-height: 1; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .mail-close:hover { background: rgba(255,255,255,0.32); }
+  .mail-body { padding: 18px 20px 20px; overflow-y: auto; }
+  .mail-row {
+    display: flex; gap: 10px; align-items: baseline;
+    padding: 5px 0; border-bottom: 1px solid var(--border);
+    font-size: 0.82rem;
+  }
+  .mail-lbl {
+    flex: 0 0 72px; color: var(--text-light);
+    font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .mail-val { color: var(--text); font-weight: 600; word-break: break-word; }
+  .mail-qty {
+    display: flex; align-items: center; gap: 10px;
+    margin: 14px 0 10px; font-size: 0.82rem; font-weight: 700; color: var(--text);
+  }
+  .mail-qty input {
+    width: 120px; padding: 8px 10px; border-radius: 8px;
+    border: 1px solid var(--border2); background: var(--surface2);
+    font-family: 'DM Mono', monospace; font-size: 0.85rem; color: var(--text);
+  }
+  .mail-qty input:focus { outline: none; border-color: var(--brand); background: #fff; }
+  #mailTxt {
+    width: 100%; box-sizing: border-box; height: 196px; resize: vertical;
+    padding: 12px; border-radius: 10px;
+    border: 1px solid var(--border); background: var(--surface2);
+    font-family: 'DM Mono', monospace; font-size: 0.74rem; line-height: 1.6;
+    color: var(--text);
+  }
+  .mail-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .mail-btn-main, .mail-btn-sec {
+    flex: 1 1 150px; padding: 11px 14px; border-radius: 9px;
+    font-family: 'Outfit', sans-serif; font-size: 0.84rem; font-weight: 700;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .mail-btn-main { background: var(--brand); color: #fff; border: 1px solid var(--brand); }
+  .mail-btn-main:hover { background: var(--brand-deep); border-color: var(--brand-deep); }
+  .mail-btn-sec { background: #fff; color: var(--brand); border: 1px solid var(--border2); }
+  .mail-btn-sec:hover { border-color: var(--brand); background: var(--brand-soft); }
+  .mail-help {
+    margin: 12px 0 0; font-size: 0.72rem; line-height: 1.6; color: var(--text-light);
+  }
+  .mail-help strong { color: var(--brand); }
+  .mail-help a { color: var(--brand-mid); font-weight: 700; }
+  @media (max-width: 768px) {
+    /* Al mobil el preu i el boto no caben a la mateixa linia: el boto baixa
+       i ocupa l'ample, que es el que es prem amb el dit. */
+    .ref-card-footer { flex-wrap: wrap; gap: 8px; justify-content: space-between; }
+    .ref-card-footer .btn-estoc {
+      width: 100%; justify-content: center; margin-top: 0;
+      padding: 11px 14px; font-size: 0.74rem;
+    }
+    .mail-modal { max-height: 94vh; }
+    #mailTxt { height: 168px; font-size: 0.7rem; }
+    .mail-btn-main, .mail-btn-sec { flex: 1 1 100%; }
+  }
 </style>
 </head>
 <body>
@@ -893,6 +999,36 @@
   </div>
 </div><!-- /page-body -->
 
+
+<!-- ── CORREU PREPARAT ──
+     No es decoracio: el mailto: sol no funciona als equips que fan servir
+     webmail, i alli el boto no feia res. Aqui el text sempre es a la vista. -->
+<div class="mail-overlay hidden" id="mailOverlay">
+  <div class="mail-modal" role="dialog" aria-modal="true" aria-labelledby="mailTitol">
+    <div class="mail-header">
+      <span class="mail-icon">✉</span>
+      <h2 id="mailTitol">Correu preparat</h2>
+    </div>
+    <button class="mail-close" id="mailTancar" aria-label="Tancar">✕</button>
+    <div class="mail-body">
+      <div class="mail-row"><span class="mail-lbl">Per a</span><span class="mail-val">danielf@aluminiosfranco.es</span></div>
+      <div class="mail-row"><span class="mail-lbl">Assumpte</span><span class="mail-val" id="mailAss"></span></div>
+      <label class="mail-qty" for="mailQty">Quantitat (uts.)
+        <input type="number" id="mailQty" min="1" step="1" inputmode="numeric" placeholder="p. ex. 10">
+      </label>
+      <textarea id="mailTxt" spellcheck="false" aria-label="Text del correu"></textarea>
+      <div class="mail-actions">
+        <button class="mail-btn-main" id="mailObrir">✉ Obrir al meu correu</button>
+        <button class="mail-btn-sec" id="mailCopiar">⧉ Copiar el text</button>
+      </div>
+      <p class="mail-help">Si no s'obre el teu programa de correu, copia el text i envia'l a
+        <strong>danielf@aluminiosfranco.es</strong>, o obre'l directament a
+        <a id="mailGmail" href="#" target="_blank" rel="noopener">Gmail</a> ·
+        <a id="mailOutlook" href="#" target="_blank" rel="noopener">Outlook</a>.</p>
+    </div>
+  </div>
+</div>
+
 <script>
 
 // ── DADES XIFRADES ─────────────────────────────────────────────────
@@ -940,24 +1076,135 @@ function isConsultable(r) {
 function fmtNum(n, dec) {
   return Number(n).toLocaleString('ca-ES', {minimumFractionDigits: dec, maximumFractionDigits: dec});
 }
+// ── CORREUS CAP A ALUMINIOS FRANCO ──
+// 🔴 EL mailto: SOL NO N'HI HA PROU. Nomes obre res si l'equip te un programa
+//   de correu associat al protocol. Als equips que fan servir webmail (Gmail o
+//   Outlook al navegador) Windows no te res registrat i el clic NO FA RES: ni
+//   s'obre res ni surt cap avis. Per aixo el text surt sempre en un quadre, amb
+//   copiar i amb enllacos al webmail. El mailto: queda com la primera opcio per
+//   a qui el te be, pero ja no es l'unica.
+// El salt de linia es NL, no una seq. escapada: aquest fitxer passa per
+// generadors i l'escapat del salt de linia ja s'ha perdut mes d'una vegada.
+var MAIL_DEST = 'danielf@aluminiosfranco.es';
+var NL = String.fromCharCode(13, 10);
+var _mailCtx = null;
+
+function _mailNum(v) { return String(v).replace('.', ','); }
+
+function _mailFitxa(r) {
+  return 'Referència:      ' + r.ref + NL
+    + 'Descripció:      ' + r.descripcion + NL
+    + 'Dimensions:      ' + r.largo + ' x ' + r.ancho + ' x ' + _mailNum(r.espesor) + ' mm' + NL
+    + 'Aliatge:         ' + r.aleacion + NL
+    + 'Tremp:           ' + r.temple + NL
+    + 'Acabat:          ' + (r.acabado || 'S/A') + NL;
+}
+
+function _mailQt(q) { return q ? q + ' uts.' : '_____ uts.'; }
+
+function _mailTxtEstoc(r, q) {
+  return 'Bon dia,' + NL + NL
+    + 'Us demanem confirmació d’existències de la xapa següent, que a la consulta '
+    + 'surt amb un termini de 7/10 dies:' + NL + NL
+    + _mailFitxa(r)
+    + NL + 'Quantitat que necessitem: ' + _mailQt(q) + NL + NL
+    + 'Ens podeu confirmar si hi ha existències i en quin termini la podríeu servir?' + NL + NL
+    + 'Moltes gràcies.';
+}
+
+function _mailTxtPreu(r, q) {
+  var est = estadoCliente(r);
+  return 'Bon dia,' + NL + NL
+    + 'Us demanem preu de la xapa següent:' + NL + NL
+    + _mailFitxa(r)
+    + 'Disponibilitat:  ' + est + NL
+    + NL + 'Quantitat que necessitem: ' + _mailQt(q) + NL + NL
+    + (est === '7/10 dies'
+        ? 'Ens podeu confirmar també si hi ha existències i en quin termini la podríeu servir?' + NL + NL
+        : '')
+    + 'Moltes gràcies.';
+}
+
 function mailConsulta(i) {
   var r = window._sliceData[i];
-  var est = estadoCliente(r);
-  var nl = '%0D%0A';
-  var subject = encodeURIComponent('Consulta xapa - ' + r.ref);
-  var body = 'Bon dia,' + nl + nl
-    + 'Demano informacio sobre la xapa seguent:' + nl + nl
-    + 'Referencia:     ' + encodeURIComponent(r.ref) + nl
-    + 'Descripcio:     ' + encodeURIComponent(r.descripcion) + nl
-    + 'Dimensions:     ' + r.largo + ' x ' + r.ancho + ' x ' + r.espesor + ' mm' + nl
-    + 'Aliatge:        ' + encodeURIComponent(r.aleacion) + nl
-    + 'Tremp:          ' + encodeURIComponent(r.temple) + nl
-    + 'Acabat:         ' + encodeURIComponent(r.acabado || 'S/A') + nl
-    + 'Disponibilitat: ' + encodeURIComponent(est) + nl + nl
-    + 'Quantitat necessaria: _____ uts.' + nl + nl
-    + 'Moltes gracies.';
-  window.location.href = 'mailto:danielf@aluminiosfranco.es?subject=' + subject + '&body=' + body;
+  if (!r) return;
+  obrirCorreu('Consulta de preu - ' + r.ref, function (q) { return _mailTxtPreu(r, q); });
 }
+
+function mailEstoc(i) {
+  var r = window._sliceData[i];
+  if (!r) return;
+  obrirCorreu('Confirmació d’existències - ' + r.ref, function (q) { return _mailTxtEstoc(r, q); });
+}
+
+function obrirCorreu(assumpte, fnCos) {
+  _mailCtx = { assumpte: assumpte, cos: fnCos };
+  document.getElementById('mailAss').textContent = assumpte;
+  var q = document.getElementById('mailQty');
+  q.value = '';
+  _mailPintar();
+  document.getElementById('mailOverlay').classList.remove('hidden');
+  setTimeout(function () { try { q.focus(); } catch (e) {} }, 60);
+}
+
+function tancarCorreu() {
+  document.getElementById('mailOverlay').classList.add('hidden');
+  _mailCtx = null;
+}
+
+function _mailPintar() {
+  if (!_mailCtx) return;
+  var qn = parseInt(document.getElementById('mailQty').value, 10);
+  var cos = _mailCtx.cos(qn > 0 ? qn : null);
+  var ta = document.getElementById('mailTxt');
+  ta.value = cos;
+  // Que el text comenci pel principi: el quadre es queda on el van deixar.
+  ta.scrollTop = 0;
+  var a = encodeURIComponent(_mailCtx.assumpte);
+  var b = encodeURIComponent(cos);
+  document.getElementById('mailGmail').href =
+    'https://mail.google.com/mail/?view=cm&fs=1&to=' + MAIL_DEST + '&su=' + a + '&body=' + b;
+  document.getElementById('mailOutlook').href =
+    'https://outlook.office.com/mail/deeplink/compose?to=' + MAIL_DEST + '&subject=' + a + '&body=' + b;
+}
+
+(function () {
+  var ov = document.getElementById('mailOverlay');
+  if (!ov) return;
+  document.getElementById('mailQty').addEventListener('input', _mailPintar);
+  document.getElementById('mailTancar').addEventListener('click', tancarCorreu);
+  ov.addEventListener('click', function (e) { if (e.target === ov) tancarCorreu(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !ov.classList.contains('hidden')) tancarCorreu();
+  });
+
+  document.getElementById('mailObrir').addEventListener('click', function () {
+    if (!_mailCtx) return;
+    // El text que s'envia es el del quadre: si l'han retocat, val el seu.
+    var a = encodeURIComponent(_mailCtx.assumpte);
+    var b = encodeURIComponent(document.getElementById('mailTxt').value);
+    window.location.href = 'mailto:' + MAIL_DEST + '?subject=' + a + '&body=' + b;
+  });
+
+  document.getElementById('mailCopiar').addEventListener('click', function () {
+    var ta = document.getElementById('mailTxt');
+    var btn = this, prev = btn.textContent;
+    var avisa = function (ok) {
+      btn.textContent = ok ? '✓ Text copiat' : '⚠ Selecciona’l i copia';
+      setTimeout(function () { btn.textContent = prev; }, 2200);
+    };
+    var aLaVella = function () {
+      // Sense permis de porta-retalls encara es pot copiar la seleccio.
+      try { ta.focus(); ta.select(); avisa(document.execCommand('copy')); }
+      catch (e) { avisa(false); }
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(ta.value).then(function () { avisa(true); }, aLaVella);
+    } else {
+      aLaVella();
+    }
+  });
+})();
 
 const PAGE_SIZE = 30;
 let filtered = [];
@@ -1068,8 +1315,11 @@ function render() {
       let footerHtml = '';
       if (precio !== null) {
         const precioUd = r.peso ? fmtNum(precio * r.peso, 2) + ' €' : '';
+        const btnEstoc = est === '7/10 dies'
+          ? '<button class="btn-estoc" onclick="mailEstoc(' + i + ')">✉ Confirmar existències</button>'
+          : '';
         footerHtml = '<div class="ref-card-footer"><span style="font-family:DM Mono,monospace;font-size:0.78rem;font-weight:700;color:var(--accent)">' +
-          fmtNum(precio, 2) + ' €/kg' + (precioUd ? ' · ' + precioUd + '/ud' : '') + '</span></div>';
+          fmtNum(precio, 2) + ' €/kg' + (precioUd ? ' · ' + precioUd + '/ud' : '') + '</span>' + btnEstoc + '</div>';
       } else if (isConsultable(r)) {
         footerHtml = '<div class="ref-card-footer"><button class="btn-consulta" onclick="mailConsulta(' + i + ')">✉ Consultar preu</button></div>';
       }
@@ -1100,7 +1350,12 @@ tbody.innerHTML = slice.map((r, i) => {
     let precioTd = '<td></td>';
     if (precio !== null) {
       const precioUd = r.peso ? fmtNum(precio * r.peso, 2) + ' €' : '—';
-      precioTd = '<td class="td-precio r">' + fmtNum(precio, 2) + ' €/kg<br><small style="font-size:0.62rem;color:var(--text-muted)">' + precioUd + '/ud</small></td>';
+      // A les 7/10 dies el preu ja hi es, pero l'estoc no esta confirmat.
+      // El boto demana aquesta confirmacio abans de fer la comanda.
+      const btnEstoc = est === '7/10 dies'
+        ? '<br><button class="btn-estoc" onclick="mailEstoc(' + i + ')" title="Demanar confirmació d’existències">✉ Confirmar estoc</button>'
+        : '';
+      precioTd = '<td class="td-precio r">' + fmtNum(precio, 2) + ' €/kg<br><small style="font-size:0.62rem;color:var(--text-muted)">' + precioUd + '/ud</small>' + btnEstoc + '</td>';
     } else if (isConsultable(r)) {
       precioTd = '<td class="r"><button class="btn-consulta" onclick="mailConsulta(' + i + ')">✉ Consultar</button></td>';
     }
