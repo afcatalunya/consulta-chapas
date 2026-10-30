@@ -797,6 +797,25 @@
   /* A la targeta, l’avis va a la seva linia, sota el distintiu. */
   .ref-card-top { flex-wrap: wrap; }
   .ref-card-top .avis-poques { flex-basis: 100%; text-align: right; max-width: none; }
+
+  /* La novetat va DINS del quadre que ja surt: dos quadres seguits serien dos
+     clics per dir el mateix. Es marca com a llegida amb localStorage, aixi que
+     surt UN sol cop per dispositiu; el quadre «Important» segueix igual. */
+  .novetat {
+    background: var(--orange-bg); border: 1px solid var(--orange-border);
+    border-radius: 10px; padding: 12px 14px; margin: 0 0 14px;
+  }
+  .novetat.hidden { display: none; }
+  .novetat-tag {
+    display: inline-block; margin-bottom: 6px;
+    font-size: 0.62rem; font-weight: 800; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--orange);
+  }
+  .novetat p { margin: 0 0 8px; font-size: 0.84rem; line-height: 1.6; }
+  .novetat p:last-child { margin-bottom: 0; }
+  .novetat ul { margin: 0 0 8px; padding-left: 18px; font-size: 0.84rem; line-height: 1.6; }
+  .novetat li { margin-bottom: 3px; }
+  .novetat strong { color: var(--text); }
 </style>
 </head>
 <body>
@@ -908,6 +927,18 @@
         <h2>Important</h2>
       </div>
       <div class="disclaimer-content">
+        <div class="novetat hidden" id="novetatPoques">
+          <span class="novetat-tag">Novetat</span>
+          <p><strong>Ara sabreu quan en queden poques.</strong> A les referències amb poques
+          unitats hi trobareu un avís sota la disponibilitat:</p>
+          <ul>
+            <li><strong>en queden poques</strong> — en queda poc material.</li>
+            <li><strong>poques immediates · més a 7/10 dies</strong> — poques per servir de
+            seguida, però n’hi ha més amb el termini de 7/10 dies.</li>
+          </ul>
+          <p>I el botó us diu què demanareu: <strong>Confirmar estoc</strong> quan el preu ja
+          hi és, o <strong>Preu i estoc</strong> quan també falta el preu.</p>
+        </div>
         <p>Les comandes cursades segons aquesta consulta d’existències <strong>estan subjectes a confirmació de disponibilitat</strong> per part del nostre equip.</p>
         <p>Tot i que les dades s'actualitzen regularment, poden produir-se canvis durant la setmana (variacions d'estoc, errors d'inventari o canvis d'última hora).</p>
         <p><strong>Sempre rebreu confirmació oficial abans de processar la comanda.</strong></p>
@@ -1490,12 +1521,28 @@ function dismissAlert() {
 }
 
 // Disclaimer de confirmación de disponibilidad
+// La novetat de «en queden poques». Surt UN sol cop per dispositiu
+// (localStorage, no sessionStorage) i deixa de sortir del tot passada la data
+// de sota: qui entri d’aqui a uns mesos no ha de veure un avís del que ja es
+// normal. La clau porta la data perque una novetat futura sigui una clau nova.
+var NOVETAT_CLAU = 'montal_novetat_poques_20261030';
+var NOVETAT_FINS = new Date('2027-01-31');
+
+function novetatPendent() {
+  var avui = new Date(); avui.setHours(0,0,0,0);
+  if (avui > NOVETAT_FINS) return false;
+  try { return !localStorage.getItem(NOVETAT_CLAU); } catch (e) { return true; }
+}
+
 function dismissDisclaimer() {
   document.getElementById('disclaimerOverlay').classList.add('hidden');
   sessionStorage.setItem('disclaimerDismissed', '1');
+  // Al tancar-lo, la novetat queda llegida per sempre en aquest dispositiu.
+  try { localStorage.setItem(NOVETAT_CLAU, new Date().toISOString().slice(0,10)); } catch (e) {}
 }
 
 function mostrarAvisos() {
+  if (novetatPendent()) document.getElementById('novetatPoques').classList.remove('hidden');
   if (!sessionStorage.getItem('disclaimerDismissed')) {
     document.getElementById('disclaimerOverlay').classList.remove('hidden');
   }
