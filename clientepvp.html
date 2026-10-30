@@ -1431,8 +1431,14 @@ const DATA = [
 ];
 
 // ── PRECIOS Y MEDIDAS ESTÁNDAR ──
+const GRUIXUT_MM = 20;        // a partir de aqui, chapa gruesa
+const RECARREC_GRUIXUT = 0.40; // €/kg de mas sobre su tarifa
 const STD_FORMATS = [
-  [2000,1000], [2500,1000], [3000,1250], [3000,1500], [2500,1250]
+  [2000,1000], [2500,1000], [3000,1250], [3000,1500], [2500,1250],
+  // Afegits el 30/10/2026 a peticio de Daniel. Van a les TRES pagines:
+  // si nomes anessin a la de MONTAL, la mateixa xapa tindria preu per a
+  // ells i «Consultar» per a la resta.
+  [2000,1250], [3020,1520]
 ];
 const PRICE_TABLE = {
   '1050':  { le6: 4.85, gt6: 5.05 },
@@ -1466,7 +1472,12 @@ function getPrecioKg(r) {
     if (esp > 5) return null;
     return esp < 5 ? PRICE_TABLE[key].le6 : PRICE_TABLE[key].gt6;
   }
-  return esp <= 6 ? PRICE_TABLE[key].le6 : PRICE_TABLE[key].gt6;
+  const tarifa = esp <= 6 ? PRICE_TABLE[key].le6 : PRICE_TABLE[key].gt6;
+  // Las gruesas van 0,40 €/kg por encima de su tarifa (Daniel, 30/10/2026).
+  // El corte en MAS de 20 mm es el unico que no cambia ningun precio que el
+  // cliente ya tuviera delante: hoy lo mas gordo que se publica son 20 mm.
+  // Se redondea a dos decimales porque 5.03 + 0.4 da 5.430000000000001.
+  return esp > GRUIXUT_MM ? +(tarifa + RECARREC_GRUIXUT).toFixed(2) : tarifa;
 }
 
 function isConsultable(r) {
