@@ -422,8 +422,6 @@
   .badge-stock::before  { background:var(--green); box-shadow:0 0 0 2px rgba(21,128,61,.2); }
   .badge-dias   { background:var(--orange-bg); color:var(--orange); border-color:var(--orange-border); }
   .badge-dias::before   { background:var(--orange); }
-  .badge-pend   { background:var(--blue-bg);   color:var(--blue2);  border-color:var(--blue-border); }
-  .badge-pend::before   { background:var(--blue2); animation:pulse 1.5s infinite; }
   .badge-sin    { background:var(--red-bg);    color:var(--red);    border-color:var(--red-border); }
   .badge-sin::before    { background:var(--red); }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
@@ -927,15 +925,6 @@
         <input type="text" id="qTexto" placeholder="Ex: CHC0090047 o «damer»" autocomplete="off">
       </div>
       <div class="fg">
-        <label>Disponibilitat</label>
-        <select id="qEstado">
-          <option value="">Tots</option>
-          <option value="Stock">Stock</option>
-          <option value="7/10 dies">7/10 dies</option>
-          <option value="Sense estoc">Sense estoc</option>
-        </select>
-      </div>
-      <div class="fg">
         <label>Llarg (mm)</label>
         <input type="number" id="qLargo" placeholder="Ej: 2000">
       </div>
@@ -1269,7 +1258,6 @@ function arrancarAmbDades() {
 
 function isActive() {
   return document.getElementById('qTexto').value.trim() !== ''
-    || document.getElementById('qEstado').value !== ''
     || document.getElementById('qLargo').value !== ''
     || document.getElementById('qAncho').value !== ''
     || document.getElementById('qEspesor').value !== ''
@@ -1288,7 +1276,6 @@ function applyFilters() {
   document.getElementById('resultsSection').style.display = 'block';
 
   const txt  = document.getElementById('qTexto').value.trim().toLowerCase();
-  const esta = document.getElementById('qEstado').value;
   const lar  = document.getElementById('qLargo').value;
   const anc  = document.getElementById('qAncho').value;
   const esp  = document.getElementById('qEspesor').value;
@@ -1296,11 +1283,13 @@ function applyFilters() {
   const temp = document.getElementById('qTemple').value;
   const acab = document.getElementById('qAcabado').value;
 
+  // No hi ha filtre de disponibilitat: una llista de tot el que no tenim no
+  // serveix de res, i el que si tenim ja es veu a la columna ESTAT de cada
+  // fila (Daniel, 04/11/2026).
   filtered = DATA.filter(r => {
     // Referència o descripció: el cas normal és que els arribi un correu
     // nostre amb la referència i la vulguin buscar tal qual.
     if (txt && !((r.ref + ' ' + r.descripcion).toLowerCase().includes(txt))) return false;
-    if (esta && estadoCliente(r) !== esta) return false;
     if (lar && r.largo != lar) return false;
     if (anc && r.ancho != anc) return false;
     if (esp && Math.abs(r.espesor - parseFloat(esp)) > 0.001) return false;
@@ -1315,7 +1304,7 @@ function applyFilters() {
 
 function resetAll() {
   ['qTexto','qLargo','qAncho'].forEach(id => document.getElementById(id).value='');
-  ['qEstado','qEspesor','qAleacion','qTemple','qAcabado'].forEach(id => document.getElementById(id).value='');
+  ['qEspesor','qAleacion','qTemple','qAcabado'].forEach(id => document.getElementById(id).value='');
   document.getElementById('hint').style.display='block';
   document.getElementById('resultsSection').style.display='none';
 }
@@ -1349,6 +1338,15 @@ function avisEstoc(r) {
 function calConfirmar(r) {
   const e = estadoCliente(r);
   return e === '7/10 dies' || (e === 'Stock' && avisEstoc(r) !== '');
+}
+
+// Si no hi ha material no es cotitza res: ni preu ni boto de consulta.
+// «Sense estoc» vol dir 10 unitats o menys als tres magatzems, o sigui que
+// no hi ha res a vendre i la columna de preu es queda buida (Daniel,
+// 04/11/2026: «las que salen sin stock cada semana no deben llevar boton de
+// consulta ni precio de ningun tipo»).
+function esCotitzable(r) {
+  return estadoCliente(r) !== 'Sense estoc';
 }
 
 function bc(e) {
@@ -1386,7 +1384,9 @@ function render() {
       const est = estadoCliente(r);
       const precio = getPrecioKg(r);
       let footerHtml = '';
-      if (precio !== null) {
+      if (!esCotitzable(r)) {
+        // Sense estoc: la targeta no porta peu.
+      } else if (precio !== null) {
         const precioUd = r.peso ? fmtNum(precio * r.peso, 2) + ' €' : '';
         const btnEstoc = calConfirmar(r)
           ? '<button class="btn-estoc" onclick="mailEstoc(' + i + ')">✉ Confirmar existències</button>'
@@ -1422,7 +1422,9 @@ tbody.innerHTML = slice.map((r, i) => {
     const precio = getPrecioKg(r);
     const est = estadoCliente(r);
     let precioTd = '<td></td>';
-    if (precio !== null) {
+    if (!esCotitzable(r)) {
+      // Sense estoc: la cel·la es queda buida.
+    } else if (precio !== null) {
       const precioUd = r.peso ? fmtNum(precio * r.peso, 2) + ' €' : '—';
       // A les 7/10 dies el preu ja hi es, pero l'estoc no esta confirmat.
       // El boto demana aquesta confirmacio abans de fer la comanda.
@@ -1510,7 +1512,7 @@ function gp(p) {
 })();
 
 ['qTexto','qLargo','qAncho'].forEach(id => document.getElementById(id).addEventListener('input', applyFilters));
-['qEstado','qEspesor','qAleacion','qTemple','qAcabado'].forEach(id => document.getElementById(id).addEventListener('change', applyFilters));
+['qEspesor','qAleacion','qTemple','qAcabado'].forEach(id => document.getElementById(id).addEventListener('change', applyFilters));
 
 
 
