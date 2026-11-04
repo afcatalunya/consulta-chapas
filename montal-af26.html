@@ -571,33 +571,6 @@
   .btn-consulta:hover { background: var(--brand-deep); border-color: var(--brand-deep); }
 
 
-  /* ── ALERTA PRECIO ── */
-  .price-alert {
-    background: linear-gradient(135deg, #78350f 0%, #92400e 100%);
-    border-bottom: 2px solid #fbbf24;
-    padding: 12px 20px;
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 12px; flex-wrap: wrap;
-    animation: slideDown 0.4s ease;
-  }
-  @keyframes slideDown {
-    from { transform: translateY(-100%); opacity: 0; }
-    to   { transform: translateY(0);     opacity: 1; }
-  }
-  .price-alert-content {
-    display: flex; align-items: center; gap: 10px;
-    font-size: 0.82rem; color: #fef3c7; font-weight: 500; flex: 1;
-  }
-  .price-alert-icon { font-size: 1.1rem; flex-shrink: 0; }
-  .price-alert-text strong { color: #fbbf24; }
-  .price-alert-close {
-    background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2);
-    color: #fef3c7; border-radius: 6px; padding: 4px 10px;
-    font-size: 0.72rem; cursor: pointer; font-family: inherit; font-weight: 600;
-    transition: background 0.15s; flex-shrink: 0;
-  }
-  .price-alert-close:hover { background: rgba(255,255,255,0.25); }
-
   /* ── DISCLAIMER MODAL ── */
   .disclaimer-overlay {
     position: fixed;
@@ -816,6 +789,9 @@
   .novetat ul { margin: 0 0 8px; padding-left: 18px; font-size: 0.84rem; line-height: 1.6; }
   .novetat li { margin-bottom: 3px; }
   .novetat strong { color: var(--text); }
+  /* El camp de text és el que més es farà servir: ocupa dues columnes. */
+  .filters-grid .fg-ample { grid-column: span 2; }
+  @media (max-width: 768px) { .filters-grid .fg-ample { grid-column: 1 / -1; } }
 </style>
 </head>
 <body>
@@ -907,17 +883,6 @@
 </header>
 
 
-  <!-- ALERTA CAMBIO PRECIO -->
-  <div class="price-alert" id="priceAlert" style="display:none">
-    <div class="price-alert-content">
-      <span class="price-alert-icon">⚠️</span>
-      <span class="price-alert-text">
-        <strong>Actualització de tarifes</strong> — Els preus de venda s'han revisat.
-        Consulteu la taula de tarifes vigents abans de fer la comanda.
-      </span>
-    </div>
-    <button class="price-alert-close" onclick="dismissAlert()">Entesos ✕</button>
-  </div>
 
   <!-- DISCLAIMER DISPONIBILIDAD -->
   <div class="disclaimer-overlay hidden" id="disclaimerOverlay">
@@ -957,6 +922,19 @@
 
 
 
+      <div class="fg fg-ample">
+        <label>Referència o descripció</label>
+        <input type="text" id="qTexto" placeholder="Ex: CHC0090047 o «damer»" autocomplete="off">
+      </div>
+      <div class="fg">
+        <label>Disponibilitat</label>
+        <select id="qEstado">
+          <option value="">Tots</option>
+          <option value="Stock">Stock</option>
+          <option value="7/10 dies">7/10 dies</option>
+          <option value="Sense estoc">Sense estoc</option>
+        </select>
+      </div>
       <div class="fg">
         <label>Llarg (mm)</label>
         <input type="number" id="qLargo" placeholder="Ej: 2000">
@@ -1160,9 +1138,14 @@ function _mailFitxa(r) {
 function _mailQt(q) { return q ? q + ' uts.' : '_____ uts.'; }
 
 function _mailTxtEstoc(r, q) {
+  // El text deia SEMPRE «7/10 dies», i el boto tambe surt en files de Stock
+  // amb poques unitats: en 21 referencies el correu deia una cosa que la
+  // pagina no deia. Ara s’escriu amb l’estat real d’aquesta fila.
+  var comSurt = estadoCliente(r) === '7/10 dies'
+    ? 'que a la consulta surt amb un termini de 7/10 dies'
+    : 'que a la consulta surt com a Stock però amb poques unitats';
   return 'Bon dia,' + NL + NL
-    + 'Us demanem confirmació d’existències de la xapa següent, que a la consulta '
-    + 'surt amb un termini de 7/10 dies:' + NL + NL
+    + 'Us demanem confirmació d’existències de la xapa següent, ' + comSurt + ':' + NL + NL
     + _mailFitxa(r)
     + NL + 'Quantitat que necessitem: ' + _mailQt(q) + NL + NL
     + 'Ens podeu confirmar si hi ha existències i en quin termini la podríeu servir?' + NL + NL
@@ -1176,7 +1159,7 @@ function _mailTxtPreu(r, q) {
     + _mailFitxa(r)
     + 'Disponibilitat:  ' + est + NL
     + NL + 'Quantitat que necessitem: ' + _mailQt(q) + NL + NL
-    + (avisEstoc(r) || est === '7/10 dies'
+    + (calConfirmar(r)
         ? 'Ens podeu confirmar també si hi ha existències i en quin termini la podríeu servir?' + NL + NL
         : '')
     + 'Moltes gràcies.';
@@ -1285,7 +1268,9 @@ function arrancarAmbDades() {
 }
 
 function isActive() {
-  return document.getElementById('qLargo').value !== ''
+  return document.getElementById('qTexto').value.trim() !== ''
+    || document.getElementById('qEstado').value !== ''
+    || document.getElementById('qLargo').value !== ''
     || document.getElementById('qAncho').value !== ''
     || document.getElementById('qEspesor').value !== ''
     || document.getElementById('qAleacion').value !== ''
@@ -1302,6 +1287,8 @@ function applyFilters() {
   document.getElementById('hint').style.display = 'none';
   document.getElementById('resultsSection').style.display = 'block';
 
+  const txt  = document.getElementById('qTexto').value.trim().toLowerCase();
+  const esta = document.getElementById('qEstado').value;
   const lar  = document.getElementById('qLargo').value;
   const anc  = document.getElementById('qAncho').value;
   const esp  = document.getElementById('qEspesor').value;
@@ -1310,6 +1297,10 @@ function applyFilters() {
   const acab = document.getElementById('qAcabado').value;
 
   filtered = DATA.filter(r => {
+    // Referència o descripció: el cas normal és que els arribi un correu
+    // nostre amb la referència i la vulguin buscar tal qual.
+    if (txt && !((r.ref + ' ' + r.descripcion).toLowerCase().includes(txt))) return false;
+    if (esta && estadoCliente(r) !== esta) return false;
     if (lar && r.largo != lar) return false;
     if (anc && r.ancho != anc) return false;
     if (esp && Math.abs(r.espesor - parseFloat(esp)) > 0.001) return false;
@@ -1323,8 +1314,8 @@ function applyFilters() {
 }
 
 function resetAll() {
-  ['qLargo','qAncho'].forEach(id => document.getElementById(id).value='');
-  ['qEspesor','qAleacion','qTemple','qAcabado'].forEach(id => document.getElementById(id).value='');
+  ['qTexto','qLargo','qAncho'].forEach(id => document.getElementById(id).value='');
+  ['qEstado','qEspesor','qAleacion','qTemple','qAcabado'].forEach(id => document.getElementById(id).value='');
   document.getElementById('hint').style.display='block';
   document.getElementById('resultsSection').style.display='none';
 }
@@ -1351,10 +1342,18 @@ function avisEstoc(r) {
   return '';
 }
 
+// Hi ha material, pero no el teniu aqui de sobra -> cal confirmar-lo.
+// SENSE ESTOC no hi entra: si no n’hi ha, no hi ha res a confirmar
+// (Daniel, 04/11/2026). Abans la condicio era l’avis de poques, i aixo
+// va deixar 28 referencies de 7/10 dies amb preu i sense cap boto.
+function calConfirmar(r) {
+  const e = estadoCliente(r);
+  return e === '7/10 dies' || (e === 'Stock' && avisEstoc(r) !== '');
+}
+
 function bc(e) {
   if (e==='Stock') return 'badge-stock';
   if (e==='7/10 dies') return 'badge-dias';
-  if (e==='Pendent de recepció') return 'badge-pend';
   return 'badge-sin';
 }
 
@@ -1389,13 +1388,13 @@ function render() {
       let footerHtml = '';
       if (precio !== null) {
         const precioUd = r.peso ? fmtNum(precio * r.peso, 2) + ' €' : '';
-        const btnEstoc = avisEstoc(r)
+        const btnEstoc = calConfirmar(r)
           ? '<button class="btn-estoc" onclick="mailEstoc(' + i + ')">✉ Confirmar existències</button>'
           : '';
         footerHtml = '<div class="ref-card-footer"><span style="font-family:DM Mono,monospace;font-size:0.78rem;font-weight:700;color:var(--accent)">' +
           fmtNum(precio, 2) + ' €/kg' + (precioUd ? ' · ' + precioUd + '/ud' : '') + '</span>' + btnEstoc + '</div>';
       } else if (isConsultable(r)) {
-        const rotulT = avisEstoc(r) ? '✉ Preu i existències' : '✉ Consultar preu';
+        const rotulT = calConfirmar(r) ? '✉ Preu i existències' : '✉ Consultar preu';
         footerHtml = '<div class="ref-card-footer"><button class="btn-consulta" onclick="mailConsulta(' + i + ')">' + rotulT + '</button></div>';
       }
       return '<div class="ref-card">' +
@@ -1430,15 +1429,15 @@ tbody.innerHTML = slice.map((r, i) => {
       // Sale cuando QUEDEN POQUES, no solo en las de 7/10 dies: una fila en
       // Stock con pocas tambien hay que poder confirmarla, y antes se quedaba
       // con el aviso puesto y sin ningun boton.
-      const btnEstoc = avisEstoc(r)
+      const btnEstoc = calConfirmar(r)
         ? '<br><button class="btn-estoc" onclick="mailEstoc(' + i + ')" title="Demanar confirmació d’existències">✉ Confirmar estoc</button>'
         : '';
       precioTd = '<td class="td-precio r">' + fmtNum(precio, 2) + ' €/kg<br><small style="font-size:0.62rem;color:var(--text-muted)">' + precioUd + '/ud</small>' + btnEstoc + '</td>';
     } else if (isConsultable(r)) {
       // Si queden poques y ademas no hay precio, al cliente le faltan LAS DOS
       // cosas: el boton las nombra, para que no tenga que escribir dos veces.
-      const rotul = avisEstoc(r) ? '✉ Preu i estoc' : '✉ Consultar';
-      const tit = avisEstoc(r) ? ' title="Demanar preu i confirmació d’existències"' : '';
+      const rotul = calConfirmar(r) ? '✉ Preu i estoc' : '✉ Consultar';
+      const tit = calConfirmar(r) ? ' title="Demanar preu i confirmació d’existències"' : '';
       precioTd = '<td class="r"><button class="btn-consulta"' + tit + ' onclick="mailConsulta(' + i + ')">' + rotul + '</button></td>';
     }
     return '<tr>' +
@@ -1510,15 +1509,10 @@ function gp(p) {
   }
 })();
 
-['qLargo','qAncho'].forEach(id => document.getElementById(id).addEventListener('input', applyFilters));
-['qEspesor','qAleacion','qTemple','qAcabado'].forEach(id => document.getElementById(id).addEventListener('change', applyFilters));
+['qTexto','qLargo','qAncho'].forEach(id => document.getElementById(id).addEventListener('input', applyFilters));
+['qEstado','qEspesor','qAleacion','qTemple','qAcabado'].forEach(id => document.getElementById(id).addEventListener('change', applyFilters));
 
 
-
-function dismissAlert() {
-  document.getElementById('priceAlert').style.display = 'none';
-  sessionStorage.setItem('priceAlertDismissed', '1');
-}
 
 // Disclaimer de confirmación de disponibilidad
 // La novetat de «en queden poques». Surt UN sol cop per dispositiu
@@ -1545,12 +1539,6 @@ function mostrarAvisos() {
   if (novetatPendent()) document.getElementById('novetatPoques').classList.remove('hidden');
   if (!sessionStorage.getItem('disclaimerDismissed')) {
     document.getElementById('disclaimerOverlay').classList.remove('hidden');
-  }
-  var ini = new Date('2026-09-18'), fi = new Date(ini);
-  fi.setDate(fi.getDate() + 5);
-  var avui = new Date(); avui.setHours(0,0,0,0);
-  if (!sessionStorage.getItem('priceAlertDismissed') && avui >= ini && avui <= fi) {
-    document.getElementById('priceAlert').style.display = 'flex';
   }
 }
 
