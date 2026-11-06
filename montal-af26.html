@@ -788,8 +788,6 @@
   .novetat li { margin-bottom: 3px; }
   .novetat strong { color: var(--text); }
   /* El camp de text és el que més es farà servir: ocupa dues columnes. */
-  .filters-grid .fg-ample { grid-column: span 2; }
-  @media (max-width: 768px) { .filters-grid .fg-ample { grid-column: 1 / -1; } }
 </style>
 </head>
 <body>
@@ -920,10 +918,6 @@
 
 
 
-      <div class="fg fg-ample">
-        <label>Referència o descripció</label>
-        <input type="text" id="qTexto" placeholder="Ex: CHC0090047 o «damer»" autocomplete="off">
-      </div>
       <div class="fg">
         <label>Llarg (mm)</label>
         <input type="number" id="qLargo" placeholder="Ej: 2000">
@@ -958,7 +952,7 @@
   <div id="hint" class="hint">
     <span class="hint-icon">📦</span>
     <p>Introduïu algun criteri per consultar la disponibilitat</p>
-    <small>Podeu cercar per referència, mides, aliatge, acabat o estat d’estoc</small>
+    <small>Podeu cercar per mides, aliatge, tremp o acabat</small>
   </div>
 
   <!-- Results -->
@@ -1257,8 +1251,7 @@ function arrancarAmbDades() {
 }
 
 function isActive() {
-  return document.getElementById('qTexto').value.trim() !== ''
-    || document.getElementById('qLargo').value !== ''
+  return document.getElementById('qLargo').value !== ''
     || document.getElementById('qAncho').value !== ''
     || document.getElementById('qEspesor').value !== ''
     || document.getElementById('qAleacion').value !== ''
@@ -1275,7 +1268,6 @@ function applyFilters() {
   document.getElementById('hint').style.display = 'none';
   document.getElementById('resultsSection').style.display = 'block';
 
-  const txt  = document.getElementById('qTexto').value.trim().toLowerCase();
   const lar  = document.getElementById('qLargo').value;
   const anc  = document.getElementById('qAncho').value;
   const esp  = document.getElementById('qEspesor').value;
@@ -1285,11 +1277,9 @@ function applyFilters() {
 
   // No hi ha filtre de disponibilitat: una llista de tot el que no tenim no
   // serveix de res, i el que si tenim ja es veu a la columna ESTAT de cada
-  // fila (Daniel, 04/11/2026).
+  // fila (Daniel, 04/11/2026). Tampoc hi ha cerca per text: la va demanar
+  // MONTAL (Daniel, 06/11/2026). Es filtra per mides i caracteristiques.
   filtered = DATA.filter(r => {
-    // Referència o descripció: el cas normal és que els arribi un correu
-    // nostre amb la referència i la vulguin buscar tal qual.
-    if (txt && !((r.ref + ' ' + r.descripcion).toLowerCase().includes(txt))) return false;
     if (lar && r.largo != lar) return false;
     if (anc && r.ancho != anc) return false;
     if (esp && Math.abs(r.espesor - parseFloat(esp)) > 0.001) return false;
@@ -1303,7 +1293,7 @@ function applyFilters() {
 }
 
 function resetAll() {
-  ['qTexto','qLargo','qAncho'].forEach(id => document.getElementById(id).value='');
+  ['qLargo','qAncho'].forEach(id => document.getElementById(id).value='');
   ['qEspesor','qAleacion','qTemple','qAcabado'].forEach(id => document.getElementById(id).value='');
   document.getElementById('hint').style.display='block';
   document.getElementById('resultsSection').style.display='none';
@@ -1511,7 +1501,7 @@ function gp(p) {
   }
 })();
 
-['qTexto','qLargo','qAncho'].forEach(id => document.getElementById(id).addEventListener('input', applyFilters));
+['qLargo','qAncho'].forEach(id => document.getElementById(id).addEventListener('input', applyFilters));
 ['qEspesor','qAleacion','qTemple','qAcabado'].forEach(id => document.getElementById(id).addEventListener('change', applyFilters));
 
 
